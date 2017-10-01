@@ -1,0 +1,95 @@
+.conveuro-dropdown {
+    display: inline-block;
+    margin-top: 0px;
+
+    font-size: 16px;
+    font-family: sans-serif;
+    color: #444;
+
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 0;
+    box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+
+    transition: all 0.25s ease;
+    overflow: hidden;
+
+    p {
+        margin: 0;
+        line-height: 1;
+    }
+
+    .conveuro-list div, .conveuro-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+ 
+        padding: 0.5em 0.75em;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .conveuro-title {
+        padding-top: 0.75em;
+        padding-bottom: 0.6em;
+
+        font-size: 1.1em;
+        font-weight: bold;
+        text-align: center;
+        background-color: #f1f1f1;
+    }
+
+    .conveuro-list {
+        overflow: auto;
+
+        div {
+            p {
+                margin-right: 1em;
+                font-size: 0.9em;
+            }
+
+            small {
+                font-size: 0.75em;
+                opacity: 0.5;
+            }
+        }
+    }
+
+    .conveuro-footer {
+        padding-top: 0;
+        padding-bottom: 0;
+
+        p {
+            padding: 0.8em 0;
+            font-size: 0.7em;
+            text-decoration: underline;
+
+            transition: all 0.2s ease-out;
+            opacity: 0.5;
+
+            &:hover {
+                cursor: pointer;
+                opacity: 0.7;
+            }
+        }
+    }
+
+    .js-conveuro-close {
+        color: #b91414;
+    }
+
+    &.is-show-more {
+        .conveuro-footer {
+            justify-content: flex-end;
+        }
+
+        .js-conveuro-more {
+            display: none;
+        }
+    }
+
+    &.is-hidden {
+        margin-top: 10px;
+        opacity: 0;
+    }
+}
