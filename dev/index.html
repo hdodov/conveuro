@@ -8,20 +8,39 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background: #ccc;
         }
 
         .conveuro-dropdown {
             position: absolute;
             top: 114px;
-            left: 334px;
+            left: 634px; /* 334 */
+        }
+
+        .test-strings p {
+            font-family: sans-serif;
+            font-size: 1.2em;
+            margin: 1.5em;
         }
     </style>
 
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-    <img src="ebay.png">
+    <div class="test-strings">
+        <p>just a number test 533 foobar</p>
+        <p>legit test $120 that's cool</p>
+        <p>здрасти, как сме, нá ти 5лв маняк</p>
+        <p>lorem te€t 23,214.23 test bar</p>
+        <p>soem bar numb 123.12 sa Kč dads</p>
+        <p>it's all about 20 dollar keywords</p>
+        <p>or maybe 20 canadian dollar keywords</p>
+        <p>or maybe maybe australian 20 dollar keywords</p>
+        <p>try with 20 HKD loool</p>
+        <p>or maybe EUR 300???</p>
+        <input type="text" name="cash" value="input test man $200 dollars">
+        <div contenteditable="true">content edit those 10£ mate</div>
+    </div>
+    <!--<img src="ebay.png">-->
 
     <div class="conveuro-dropdown">
         <p class="conveuro-title">$3.37 USD</p>
@@ -51,5 +70,22 @@
     </div>
 
     <script src="script.js"></script>
+
+    <script type="text/javascript">
+        var dropdown = document.getElementsByClassName("conveuro-dropdown")[0],
+            list = document.getElementsByClassName("conveuro-list")[0],
+            more = document.getElementsByClassName("conv-more")[0],
+            button = document.getElementsByClassName("js-conveuro-more")[0];
+
+        function showmore() {
+            dropdown.classList.add("is-show-more");
+            list.style.maxHeight = list.clientHeight + "px";
+            more.style.display = "block";
+        }
+
+        function closedropdown() {
+            dropdown.classList.add("is-hidden");
+        }
+    </script>
 </body>
 </html>
