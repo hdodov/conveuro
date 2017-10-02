@@ -20,12 +20,20 @@ function getSelectedText(range) {
     }
 }
 
+function detectNumber(text) {
+    var value = text.match(/\d[\d\., ]*/g);
+    if (value && value.length === 1) {
+        return parseFloat(value[0].replace(/[^\d\.]/g, ''));
+    }
+
+    return null;
+}
+
 document.addEventListener("mouseup", function () {
     var range = getSelectionRange();
 
     if (range) {
         var text = getSelectedText(range);
-
-        console.log(text);
+        console.log(detectCurrency(text));
     }
 });

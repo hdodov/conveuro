@@ -1,6 +1,8 @@
+// Most traded currencies: https://en.wikipedia.org/wiki/Template:Most_traded_currencies
+
 var CURRENCIES = {
   "AUD": { // https://en.wikipedia.org/wiki/Australian_dollar
-    "occurence": 6.9,
+    "share": 6.9,
     "symbols": ["$", "A$"],
     "format": "$%d %s",
     "words": [
@@ -9,9 +11,9 @@ var CURRENCIES = {
     ]
   },
   "BGN": { // https://en.wikipedia.org/wiki/Bulgarian_lev
-    "occurence": null,
-    "symbols": ["лв", "лв."],
-    "format": "%dлв.",
+    "share": null,
+    "symbols": ["лв"],
+    "format": "%dлв",
     "words": [
       "bulgarian",
       "lev",
@@ -19,9 +21,9 @@ var CURRENCIES = {
     ]
   },
   "BRL": { // https://en.wikipedia.org/wiki/Brazilian_real
-    "occurence": 1,
+    "share": 1,
     "symbols": ["$", "R$"],
-    "format": "R$%d",
+    "format": "R$%d %s",
     "words": [
       "brazilian",
       "real",
@@ -29,7 +31,7 @@ var CURRENCIES = {
     ]
   },
   "CAD": { // https://en.wikipedia.org/wiki/Canadian_dollar
-    "occurence": 5.1,
+    "share": 5.1,
     "symbols": ["$", "Can$", "C$"],
     "format": "$%d %s",
     "words": [
@@ -38,7 +40,7 @@ var CURRENCIES = {
     ]
   },
   "CHF": { // https://en.wikipedia.org/wiki/Swiss_franc
-    "occurence": 4.8,
+    "share": 4.8,
     "symbols": ["Fr.", "SFr."],
     "format": "%d francs",
     "words": [
@@ -48,8 +50,8 @@ var CURRENCIES = {
       "franchi"
     ]
   },
-  "CNY": { // https://en.wikipedia.org/wiki/Yuan_(currency)
-    "occurence": 4.0,
+  "CNY": { // https://en.wikipedia.org/wiki/Renminbi
+    "share": 4.0,
     "symbols": ["元", "¥"],
     "format": "RMB %d",
     "words": [
@@ -59,7 +61,7 @@ var CURRENCIES = {
     ]
   },
   "CZK": { // https://en.wikipedia.org/wiki/Czech_koruna
-    "occurence": null,
+    "share": null,
     "symbols": ["Kč"],
     "format": "%d Kč",
     "words": [
@@ -71,7 +73,7 @@ var CURRENCIES = {
     ]
   },
   "DKK": { // https://en.wikipedia.org/wiki/Danish_krone
-    "occurence": null,
+    "share": null,
     "symbols": ["kr", "kr."],
     "format": "%d kroner",
     "words": [
@@ -80,8 +82,8 @@ var CURRENCIES = {
       "kroner"
     ]
   },
-  "EUR"; { // https://en.wikipedia.org/wiki/Euro
-    "occurence": 37.4,
+  "EUR": { // https://en.wikipedia.org/wiki/Euro
+    "share": 37.4,
     "symbols": ["€"],
     "format": "€%d %s",
     "words": [
@@ -89,7 +91,7 @@ var CURRENCIES = {
     ]
   },
   "GBP": { // https://en.wikipedia.org/wiki/Pound_sterling
-    "occurence": 12.8,
+    "share": 12.8,
     "symbols": ["£"],
     "format": "£%d %s",
     "words": [
@@ -99,7 +101,7 @@ var CURRENCIES = {
     ]
   },
   "HKD": { // https://en.wikipedia.org/wiki/Hong_Kong_dollar
-    "occurence": 1.7,
+    "share": 1.7,
     "symbols": ["$", "HK$", "元"],
     "format": "$%d %s",
     "words": [
@@ -111,7 +113,7 @@ var CURRENCIES = {
     ]
   },
   "HRK": { // https://en.wikipedia.org/wiki/Croatian_kuna
-    "occurence": null,
+    "share": null,
     "symbols": ["kn"],
     "format": "%d kn",
     "words": [
@@ -121,7 +123,7 @@ var CURRENCIES = {
     ]
   },
   "HUF": { // https://en.wikipedia.org/wiki/Hungarian_forint
-    "occurence": null,
+    "share": null,
     "symbols": ["Ft"],
     "format": "%d Ft",
     "words": [
@@ -130,7 +132,7 @@ var CURRENCIES = {
     ]
   },
   "IDR": { // https://en.wikipedia.org/wiki/Indonesian_rupiah
-    "occurence": null,
+    "share": null,
     "symbols": ["Rp"],
     "format": "Rp %d",
     "words": [
@@ -140,7 +142,7 @@ var CURRENCIES = {
     ]
   },
   "ILS": { // https://en.wikipedia.org/wiki/Israeli_new_shekel
-    "occurence": null,
+    "share": null,
     "symbols": ["₪"],
     "format": "₪%d %s",
     "words": [
@@ -155,7 +157,7 @@ var CURRENCIES = {
     ]
   },
   "INR": { // https://en.wikipedia.org/wiki/Indian_rupee
-    "occurence": 1.1,
+    "share": 1.1,
     "symbols": ["₹"],
     "format": "₹%d %s",
     "words": [
@@ -165,7 +167,7 @@ var CURRENCIES = {
     ]
   },
   "JPY": { // https://en.wikipedia.org/wiki/Japanese_yen
-    "occurence": 21.6,
+    "share": 21.6,
     "symbols": ["¥", "円", "圓"],
     "format": "¥%d %s",
     "words": [
@@ -176,9 +178,9 @@ var CURRENCIES = {
     ]
   },
   "KRW": { // https://en.wikipedia.org/wiki/South_Korean_won
-    "occurence": 1.7,
+    "share": 1.7,
     "symbols": ["₩"],
-    "format": "₩%d",
+    "format": "₩%d %s",
     "words": [
       "south",
       "korea",
@@ -187,7 +189,7 @@ var CURRENCIES = {
     ]
   },
   "MXN": { // https://en.wikipedia.org/wiki/Mexican_peso
-    "occurence": 1.9,
+    "share": 1.9,
     "symbols": ["$", "Mex$"],
     "format": "$%d %s",
     "words": [
@@ -197,7 +199,7 @@ var CURRENCIES = {
     ]
   },
   "MYR": { // https://en.wikipedia.org/wiki/Malaysian_ringgit
-    "occurence": null,
+    "share": null,
     "symbols": ["RM"],
     "format": "RM%d",
     "words": [
@@ -206,7 +208,7 @@ var CURRENCIES = {
     ]
   },
   "NOK": { // https://en.wikipedia.org/wiki/Norwegian_krone
-    "occurence": 1.7,
+    "share": 1.7,
     "symbols": ["kr"],
     "format": "%d kr",
     "words": [
@@ -215,7 +217,7 @@ var CURRENCIES = {
     ]
   },
   "NZD": { // https://en.wikipedia.org/wiki/New_Zealand_dollar
-    "occurence": 2.1,
+    "share": 2.1,
     "symbols": ["$"],
     "format": "$%d %s",
     "words": [
@@ -227,9 +229,9 @@ var CURRENCIES = {
     ]
   },
   "PHP": { // https://en.wikipedia.org/wiki/Philippine_peso
-    "occurence": null,
+    "share": null,
     "symbols": ["₱"],
-    "format": "₱%d",
+    "format": "₱%d %s",
     "words": [
       "philippine",
       "peso",
@@ -238,7 +240,7 @@ var CURRENCIES = {
     ]
   },
   "PLN": { // https://en.wikipedia.org/wiki/Polish_z%C5%82oty
-    "occurence": null,
+    "share": null,
     "symbols": ["zł"],
     "format": "%dzł",
     "words": [
@@ -248,7 +250,7 @@ var CURRENCIES = {
     ]
   },
   "RON": { // https://en.wikipedia.org/wiki/Romanian_leu
-    "occurence": null,
+    "share": null,
     "symbols": ["leu"],
     "format": "%d lei",
     "words": [
@@ -258,7 +260,7 @@ var CURRENCIES = {
     ]
   },
   "RUB": { // https://en.wikipedia.org/wiki/Russian_ruble
-    "occurence": 1.1,
+    "share": 1.1,
     "symbols": ["₽", "руб"],
     "format": "%d₽",
     "words": [
@@ -268,10 +270,10 @@ var CURRENCIES = {
       "рубли́"
     ]
   },
-  "SEK": {
-    "occurence": 2.2,
-    "symbols": "kr",
-    "format": "",
+  "SEK": { // https://en.wikipedia.org/wiki/Swedish_krona
+    "share": 2.2,
+    "symbols": ["kr"],
+    "format": "%d kr",
     "words": [
       "swedish",
       "krona",
@@ -286,29 +288,29 @@ var CURRENCIES = {
       "lök"
     ]
   },
-  "SGD": {
-    "occurence": 1.8,
-    "symbols": "S$",
-    "format": "",
+  "SGD": { // https://en.wikipedia.org/wiki/Singapore_dollar
+    "share": 1.8,
+    "symbols": ["$", "S$"],
+    "format": "S$%d %s",
     "words": [
       "singapore",
       "dollar"
     ]
   },
-  "THB": {
-    "occurence": null,
-    "symbols": "฿",
-    "format": "",
+  "THB": { // https://en.wikipedia.org/wiki/Thai_baht
+    "share": null,
+    "symbols": ["฿"],
+    "format": "฿%d %s",
     "words": [
       "thai",
       "baht",
       "บาท"
     ]
   },
-  "TRY": {
-    "occurence": 1.4,
-    "symbols": "₺",
-    "format": "",
+  "TRY": { // https://en.wikipedia.org/wiki/Turkish_lira
+    "share": 1.4,
+    "symbols": ["₺"],
+    "format": "₺%d %s",
     "words": [
       "turkish",
       "lira",
@@ -316,10 +318,10 @@ var CURRENCIES = {
       "lirası"
     ]
   },
-  "USD": {
-    "occurence": 80.6,
-    "symbols": "$",
-    "format": "",
+  "USD": { // https://en.wikipedia.org/wiki/United_States_dollar
+    "share": 80.6,
+    "symbols": ["$"],
+    "format": "$%d %s",
     "words": [
       "united",
       "states",
@@ -329,10 +331,10 @@ var CURRENCIES = {
       "buck"
     ]
   },
-  "ZAR": {
-    "occurence": 1.0,
-    "symbols": "R",
-    "format": "",
+  "ZAR": { // https://en.wikipedia.org/wiki/South_African_rand
+    "share": 1.0,
+    "symbols": ["R"],
+    "format": "R %d",
     "words": [
       "south",
       "african",
