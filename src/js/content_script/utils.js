@@ -44,7 +44,7 @@ function beautifyValue(value, digits) {
     }
 
     var split = value.toString().split("."),
-        valueWhole = split[0];
+        valueWhole = split[0],
         valueDecimal = split[1] || "",
         shownDecimalsCount = digits - valueWhole.length,
         shownDecimals = "";

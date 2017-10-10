@@ -1,7 +1,7 @@
 // Turn dropdown into object. Each selection creates new dropdown.
 // Make dropdown draggable by it's title area.
 
-document.addEventListener("mouseup", function (e) {
+document.addEventListener("mouseup", function (event) {
     var range = getSelectionRange();
 
     if (range) {
@@ -12,8 +12,9 @@ document.addEventListener("mouseup", function (e) {
                 value = detectNumber(text);
 
             if (typeof currency === "string" && typeof value === "number") {
-                currencyAPICall(currency, function (rates) {
-                    Dropdown.show([e.pageX, e.pageY], currency, value, rates);
+                chrome.runtime.sendMessage({currency: currency}, function (rates) {
+                    console.log("aasd");
+                    Dropdown.show([event.pageX, event.pageY], currency, value, rates);
                 });
             }
         }
@@ -52,30 +53,4 @@ function detectNumber(text) {
     }
 
     return null;
-}
-
-function currencyAPICall(currency, callback) {
-    var url = "http://api.fixer.io/latest?base=" + currency,
-        req = new XMLHttpRequest();
-
-    req.addEventListener("load", function () {
-        if (this.status >= 200 && this.status < 300) {
-            var data = null;
-
-            try {
-                data = JSON.parse(this.responseText);
-            } catch (e) {
-                console.warn("Conveuro: Couldn't parse response JSON.");
-            }
-
-            if (data && data.rates) {
-                callback(data.rates);
-            }
-        }
-    });
-
-    req.open("GET", url);
-    req.send();
-
-    return req;
 }

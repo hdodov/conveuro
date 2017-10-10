@@ -6,7 +6,7 @@
   "author": "Hristiyan Dodov",
   "description": "Easily convert currencies with a simple selection.",
   "icons": {
-    "16": "icon-16.png"
+    "16": "icons/icon-16.png"
   },
 
   "browser_action": {
@@ -14,8 +14,13 @@
   },
 
   "permissions": [
-    "storage"
+    "https://*/*",
+    "http://*/*"
   ],
+
+  "background": {
+    "scripts": ["background.js"]
+  },
 
   "content_scripts": [
     {

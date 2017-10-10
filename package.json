@@ -1,0 +1,34 @@
+{
+  "name": "conveuro",
+  "version": "1.0.0",
+  "description": "Easily convert between currencies with a simple cursor selection.",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-if": "^2.0.2",
+    "gulp-iife": "^0.3.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^3.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hdodov/conveuro.git"
+  },
+  "keywords": [
+    "convert",
+    "currencies",
+    "exchange",
+    "rates"
+  ],
+  "author": "Hristiyan Dodov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hdodov/conveuro/issues"
+  },
+  "homepage": "https://github.com/hdodov/conveuro#readme"
+}
