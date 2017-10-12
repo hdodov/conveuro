@@ -1,7 +1,22 @@
+$EXTENSION_ID: 'cdddhfgfgancbdapphmamhiadjmgcojp';
+$EXTENSION_URL: 'chrome-extension://' + $EXTENSION_ID + '/';
+
+$list-item-border: 1px solid rgba(0, 0, 0, 0.1);
+$list-border: 1px solid rgba(0, 0, 0, 0.1);
+$color-bg: #f2f2f2;
+
+$spinner-diameter: 1.4em;
+$spinner-image: $EXTENSION_URL + 'img/spinner.png';
+@keyframes conveuro-spinner-animation {
+    0%   { transform: rotate(0); }
+    100% { transform: rotate(360deg); }
+}
+
 .conveuro-dropdown {
     position: absolute;
-    display: inline-block;
     visibility: visible;
+    display: inline-block;
+    min-width: 10.5em;
     margin-top: 0px;
 
     font-size: 16px;
@@ -10,12 +25,12 @@
 
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.15);
-    border-bottom: 0;
-    box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.15);
     border-radius: 4px;
 
     transition: margin 0.25s ease, visibility 0.25s ease, opacity 0.25s ease;
     overflow: hidden;
+    z-index: 2147483647 !important;
 
     &.is-hidden {
         visibility: hidden;
@@ -23,18 +38,24 @@
         opacity: 0;
     }
 
-    p {
-        margin: 0;
-        line-height: 1;
+    &.is-loading .conveuro-list {
+        &:before, &:after {
+            visibility: visible;
+        }
+
+        &:before {
+            opacity: 0.75;
+        }
+
+        &:after {
+            opacity: 1;
+        }
     }
 
-    .conveuro-list div, .conveuro-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
- 
-        padding: 0.5em 0.75em;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    p, small {
+        margin: 0;
+        padding: 0;
+        line-height: 1;
     }
 
     .conveuro-title {
@@ -44,10 +65,12 @@
         font-size: 1.1em;
         font-weight: bold;
         text-align: center;
-        background-color: #f1f1f1;
+        background-color: $color-bg;
+        border-bottom: $list-border;
     }
 
     .conveuro-list {
+        position: relative;
         overflow: auto;
 
         div {
@@ -65,11 +88,83 @@
                 opacity: 0.5;
             }
         }
+
+        &:before {
+            /* overlay */
+            content: "";
+            position: absolute;
+                top: 0;
+                left: 0;
+
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+        }
+
+        &:after {
+            /* spinner */
+            content: "";
+            position: absolute;
+                top: 50%;
+                left: 50%;
+
+            z-index: 11;
+            width: $spinner-diameter;
+            height: $spinner-diameter;
+            margin-left: -($spinner-diameter / 2);
+            margin-top: -($spinner-diameter / 2);
+
+            background-image: url($spinner-image);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: conveuro-spinner-animation 0.8s linear infinite;
+        }
+
+        &:before, &:after {
+            visibility: hidden;
+            pointer-events: none;
+            opacity: 0;
+
+            transition: all 0.3s ease-out;
+        }
+    }
+
+    .conveuro-list div, .conveuro-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5em 0.75em;
+    }
+
+    .conveuro-list div + div {
+        border-top: $list-item-border;
+    }
+
+    .conveuro-error {
+        text-align: center;
+
+        .code {
+            margin: 0.6em;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #d44;
+        }
+
+        .message {
+            margin: 1em;
+            font-size: 0.8em;
+            opacity: 0.6;
+        }
     }
 
     .conveuro-footer {
         padding-top: 0;
         padding-bottom: 0;
+
+        border-top: $list-border;
+        background-color: $color-bg;
 
         p {
             padding: 0.8em 0;

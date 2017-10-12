@@ -1,3 +1,13 @@
+function obj_length(obj) {
+    var i = 0;
+
+    for (var k in obj) {
+        i++;
+    }
+
+    return i;
+}
+
 function obj_filter(obj, predicate) {
     var passing = {};
 
@@ -46,6 +56,7 @@ function beautifyValue(value, digits) {
     var split = value.toString().split("."),
         valueWhole = split[0],
         valueDecimal = split[1] || "",
+        shownWhole = addValueCommas(valueWhole),
         shownDecimalsCount = digits - valueWhole.length,
         shownDecimals = "";
 
@@ -60,7 +71,7 @@ function beautifyValue(value, digits) {
         }
     }
 
-    var result = valueWhole;
+    var result = shownWhole;
     if (shownDecimals.length > 0) {
         result += "." + shownDecimals;
     }
@@ -68,7 +79,46 @@ function beautifyValue(value, digits) {
     return result;
 }
 
-function currencyValueString(code, value, showCode) {
+function addValueCommas(value) {
+    if (typeof value == "string" || typeof value == "number") {
+        var parsed = parseInt(value);
+
+        if (typeof parsed != "number" || parsed == 0) {
+            return value;
+        }
+    }
+    
+    var result = "",
+        counter = 0;
+
+    for (var i = value.length - 1; i >= 0; i--) {
+        result = value[i] + result;
+        counter++;
+
+        if (counter >= 3 && i > 0) {
+            result = "," + result;
+            counter = 0;
+        }
+    }
+
+    return result;
+}
+
+function filterCurrencies(predicate) {
+    var passing = {};
+
+    for (var k in CURRENCIES) {
+        var result = predicate(CURRENCIES[k], k);
+
+        if (result !== false) {
+            passing[k] = result;
+        }
+    }
+
+    return passing;
+}
+
+function formatCurrencyValue(code, value, showCode) {
     var result = value;
 
     if (CURRENCIES[code]) {

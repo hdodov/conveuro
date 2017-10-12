@@ -1,35 +1,45 @@
 {
   "manifest_version": 2,
   "name": "Conveuro",
-  "version": "1.0",
+  "version": "1.0.0",
 
   "author": "Hristiyan Dodov",
-  "description": "Easily convert currencies with a simple selection.",
+  "description": "Instantly convert currencies with a simple text selection.",
   "icons": {
-    "16": "icons/icon-16.png"
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
   },
+
+  "web_accessible_resources": [
+    "js/*",
+    "img/*",
+    "css/*"
+  ],
 
   "browser_action": {
     "default_popup": "popup.html"
   },
 
   "permissions": [
-    "https://*/*",
-    "http://*/*"
+    "https://fixer.io/*"
   ],
 
   "background": {
-    "scripts": ["background.js"]
+    "scripts": [
+      "js/background.js"
+    ],
+    "persistent": true
   },
 
   "content_scripts": [
     {
       "run_at": "document_start",
       "css": [
-        "main.css"
+        "css/main.css"
       ],
       "js": [
-        "script.js"
+        "js/content.js"
       ],
       "matches": [
         "file:///*",

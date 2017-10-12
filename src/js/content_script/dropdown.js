@@ -1,105 +1,160 @@
-var Dropdown = (function () {
-    var exports = {};
+function Dropdown(x, y) {
+    this.loaded = false;
+    this.destroyed = false;
+    this.onDestroy = null;
 
-    var _exists = false,
-        _dropdown,
-        _title,
-        _list,
-        _btnMore,
-        _btnClose
+    this.elem = document.createElement("div");
+    document.body.appendChild(this.elem);
 
-    function _create() {
-        _dropdown = document.createElement("div");
-        document.body.appendChild(_dropdown);
-        _dropdown.classList.add("conveuro-dropdown");
-        _dropdown.innerHTML =
-        '<p class="conveuro-title"></p>' +
-        '<div class="conveuro-list"></div>' +
-        '<div class="conveuro-footer">' +
-            '<p class="js-conveuro-more">see more...</p>' +
-            '<p class="js-conveuro-close">close</p>' +
-        '</div>';
+    this.elem.classList.add("conveuro-dropdown", "is-hidden");
+    this.elem.innerHTML =
+    '<p class="conveuro-title"></p>' +
+    '<div class="conveuro-list"></div>' +
+    '<div class="conveuro-error"></div>' +
+    '<div class="conveuro-footer">' +
+        '<p class="js-conveuro-more">see more...</p>' +
+        '<p class="js-conveuro-close">close</p>' +
+    '</div>';
 
-        _title = _dropdown.getElementsByClassName("conveuro-title")[0];
-        _list = _dropdown.getElementsByClassName("conveuro-list")[0];
-        _btnMore = _dropdown.getElementsByClassName("js-conveuro-more")[0];
-        _btnClose = _dropdown.getElementsByClassName("js-conveuro-close")[0];
+    this.title = this.elem.getElementsByClassName("conveuro-title")[0];
+    this.list = this.elem.getElementsByClassName("conveuro-list")[0];
+    this.errorContainer = this.elem.getElementsByClassName("conveuro-error")[0];
+    this.btnMore = this.elem.getElementsByClassName("js-conveuro-more")[0];
+    this.btnClose = this.elem.getElementsByClassName("js-conveuro-close")[0];
 
-        _btnMore.addEventListener("click", function () {
-            this.classList.add("is-hidden");
+    var that = this;
 
-            _list.style.maxHeight = _list.offsetHeight + "px";
-            _list.childNodes.forEach(function (node) {
-                node.classList.remove("is-hidden");
-            });
+    this.btnMore.addEventListener("click", function () {
+        this.classList.add("is-hidden");
+
+        that.list.style.maxHeight = that.list.offsetHeight + "px";
+        that.list.childNodes.forEach(function (node) {
+            node.classList.remove("is-hidden");
         });
+    });
 
-        _btnClose.addEventListener("click", function () {
-            _dropdown.classList.add("is-hidden");
-        });
+    this.btnClose.addEventListener("click", function () {
+        that.close();
+    });
 
-        _exists = true;
-    }
+    this.setPosition(x, y);
+} Dropdown.prototype = {
+    setPosition: function (x, y) {
+        this.elem.style.left = x + "px";
+        this.elem.style.top = y + "px";
+    },
 
-    function _renderList(data) {
-        _list.innerHTML = "";
-        _btnMore.classList.add("is-hidden");
+    createListItem: function (data) {
+        var item = document.createElement("div");
+        item.innerHTML =
+            '<p>' + data.value + '</p>' +
+            '<small title="' + data.name + '">' + data.rate + ' ' + data.currency + '</small>';
 
-        data.forEach(function (entry, i) {
-            var item = _createListItem(entry[0], entry[1], entry[2]);
-            _list.appendChild(item);
+        return item;
+    },
+
+    renderList: function (list) {
+        this.list.innerHTML = "";
+        this.btnMore.classList.add("is-hidden");
+
+        var that = this;
+        list.forEach(function (data, i) {
+            var item = that.createListItem(data);
+            that.list.appendChild(item);
 
             if (i >= 3) {
                 item.classList.add("is-hidden");
-                _btnMore.classList.remove("is-hidden");
+                that.btnMore.classList.remove("is-hidden");
             }
         });
-    }
+    },
 
-    function _createListItem(currencyCode, value, rate) {
-        var formattedValue = currencyValueString(currencyCode, beautifyValue(value, 3), false),
-            formattedRate = beautifyValue(rate, 5);
+    renderPlaceholderList: function (itemsCount) {
+        var data = {
+            value: "----------",
+            rate: "",
+            currency: "-----"
+        };
 
-        var item = document.createElement("div");
-        item.innerHTML =
-            '<p>' + formattedValue + '</p>' +
-            '<small>' + formattedRate + ' ' + currencyCode + '</small>';
+        this.list.innerHTML = "";
+        this.btnMore.classList.add("is-hidden");
+        for (var i = 0; i < itemsCount; i++) {
+            this.list.appendChild(this.createListItem(data));
+        }
+    },
 
-        return item;
-    }
+    renderError: function (error) {
+        this.renderList([]);
+        this.errorContainer.innerHTML = '';
 
-    function _setPosition(x, y) {
-        _dropdown.style.left = x + "px";
-        _dropdown.style.top = y + "px";
-    }
-
-    exports.show = function (position, currency, value, rates) {
-        if (!_exists) {
-            _create();
+        if (error.code) {
+            this.errorContainer.innerHTML += '<p class="code">' + error.code + '</p>';
         }
 
-        if (!_dropdown.classList.contains("is-hidden")) {
-            _dropdown.classList.add("is-hidden");
+        if (error.message) {
+            this.errorContainer.innerHTML += '<p class="message">' + error.message + '</p>';
+        }
+    },
 
-            var that = this, args = arguments;
-            setTimeout(function () {
-                exports.show.apply(that, args);
-            }, 100);
+    setTitle: function (value) {
+        this.title.innerHTML = value;
+    },
 
+    setLoaded: function (value) {
+        this.loaded = value;
+
+        if (value === true) {
+            this.setLoading(false);
+        }
+    },
+
+    setLoading: function (value) {
+        if (value === true && !this.loaded) {
+            this.elem.classList.add("is-loading");
+        } else {
+            this.elem.classList.remove("is-loading");
+        }
+    },
+
+    show: function () {
+        this.elem.classList.remove("is-hidden");
+    },
+
+    close: function () {
+        this.elem.classList.add("is-hidden");
+
+        var that = this;
+        this.elem.addEventListener("transitionend", function () {
+            that.destroy();
+        });
+
+        // If transitionend didn't trigger for some reason, wait some time and
+        // remove the dropdown from the DOM.
+        setTimeout(function () {
+            if (!that.destroyed) {
+                that.destroy();
+            }
+        }, 5000);
+    },
+
+    destroy: function () {
+        if (this.destroyed) {
             return;
         }
 
-        _dropdown.classList.remove("is-hidden");
+        this.elem.parentElement.removeChild(this.elem);
 
-        var list = [];
-        for (var k in rates) {
-            list.push([k, value * rates[k], rates[k]]);
+        this.elem = null;
+        this.title = null;
+        this.list = null;
+        this.errorContainer = null;
+        this.btnMore = null;
+        this.btnClose = null;
+
+        this.destroyed = true;
+
+        if (typeof this.onDestroy == "function") {
+            this.onDestroy();
         }
-
-        _title.innerText = currencyValueString(currency, value);
-        _renderList(list);
-        _setPosition(position[0], position[1]);
-    };
-
-    return exports;
-})();
+    }
+};

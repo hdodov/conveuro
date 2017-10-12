@@ -4,18 +4,25 @@ var sass = require("gulp-sass");
 var gulpif = require("gulp-if");
 var uglify = require("gulp-uglify");
 var concat = require("gulp-concat");
-var useref = require("gulp-useref");
 
 gulp.task('content_script', function () {
     gulp.src('src/js/content_script/*.js')
         .pipe(concat('content.js'))
-        .pipe(gulp.dest('extension'));
+        .pipe(iife({
+            useStrict: true
+        }))
+        .pipe(uglify())
+        .pipe(gulp.dest('extension/js'));
 });
 
 gulp.task('event_page', function () {
     gulp.src('src/js/event_page/*.js')
         .pipe(concat('background.js'))
-        .pipe(gulp.dest('extension'));
+        .pipe(iife({
+            useStrict: true
+        }))
+        .pipe(uglify())
+        .pipe(gulp.dest('extension/js'));
 });
 
 gulp.task('sass', function () {
@@ -23,7 +30,7 @@ gulp.task('sass', function () {
         .pipe(sass({
             outputStyle: "nested"
         }))
-        .pipe(gulp.dest('extension'));
+        .pipe(gulp.dest('extension/css'));
 });
 
 gulp.task("main", function () {
@@ -31,4 +38,9 @@ gulp.task("main", function () {
     gulp.watch('src/sass/*.scss', ['sass']);
 });
 
-gulp.task("default", ["main"]);
+gulp.task("default", [
+    "content_script",
+    "event_page",
+    "sass",
+    "main"
+]);

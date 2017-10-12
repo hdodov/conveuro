@@ -1,33 +1,71 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (sender.tab && request.currency) {
-        currencyAPICall(request.currency, function (rates) {
-            sendResponse(rates);
+    if (sender.tab && request.getWorthy && request.data) {
+        var detected = detectData(request.data);
+
+        sendResponse({
+            title: formatCurrencyValue(detected.currency, beautifyValue(detected.value, 3)),
+            currency: detected.currency,
+            value: detected.value
         });
 
         return true;
     }
 });
 
-function currencyAPICall(currency, callback) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (sender.tab && request.getRates) {
+        currencyAPICall(request.currency, function (rates) {
+            sendResponse({list: getRatesList(request.value, rates)});
+        }, function (error) {
+            sendResponse(error);
+        });
+
+        return true;
+    }
+});
+
+function getRatesList(value, rates) {
+    var list = [];
+
+    for (var k in rates) {
+        list.push({
+            currency: k,
+            name: CURRENCIES[k].name,
+            value: formatCurrencyValue(k, beautifyValue(value * rates[k], 3), false),
+            rate: beautifyValue(rates[k], 5)
+        });
+    }
+
+    return list;
+}
+
+function currencyAPICall(currency, onComplete, onError) {
     var url = "https://api.fixer.io/latest?base=" + currency,
         req = new XMLHttpRequest();
 
     req.addEventListener("readystatechange", function () {
-        console.log(this.responseURL, this.status, this.statusText);
+        if (this.readyState === 4) {
+            if (this.status == 200) {
+                var data = null;
 
-        if (this.status >= 200 && this.status < 300 && this.readyState === 4) {
-            var data = null;
+                try {
+                    data = JSON.parse(this.responseText);
+                } catch (e) {
+                    onError({
+                        message: "Couldn't parse response data."
+                    });
+                }
 
-            try {
-                data = JSON.parse(this.responseText);
-            } catch (e) {
-                console.warn("Conveuro: Couldn't parse response JSON.");
+                if (data && data.rates) {
+                    onComplete(data.rates);
+                }
+            } else {
+                onError({
+                    message: this.statusText,
+                    code: this.status
+                });
             }
-
-            if (data && data.rates) {
-                callback(data.rates);
-            }
-        }
+        } 
     });
 
     req.open("GET", url, true);
