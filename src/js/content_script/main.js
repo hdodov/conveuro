@@ -38,10 +38,14 @@ document.addEventListener("mouseup", function (event) {
 });
 
 function createDropdown(position, data) {
-    var dropdown = new Dropdown(position[0], position[1]);
-    dropdown.setTitle(data.title);
+    var dropdown = new Dropdown();
     dropdown.renderPlaceholderList(3);
+    dropdown.setTitle(data.title);
     dropdown.setLoading(true);
+    dropdown.setPosition(
+        position[0] - (dropdown.elem.offsetWidth / 2),
+        position[1] + 24
+    );
 
     DropdownManager.add(dropdown, data.title);
     dropdown.addClickClose();

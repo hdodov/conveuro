@@ -28,13 +28,25 @@ $spinner-image: $EXTENSION_URL + 'img/spinner.png';
     box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.15);
     border-radius: 4px;
 
-    transition: margin 0.25s ease, visibility 0.25s ease, opacity 0.25s ease;
+    transition:
+        transform 0.25s ease,
+        margin 0.25s ease,
+        visibility 0.25s ease,
+        opacity 0.25s ease;
+
+    transform: scale(1);
     overflow: hidden;
     z-index: 2147480000;
 
     &.is-hidden {
         visibility: hidden;
-        margin-top: 10px;
+        margin-top: -12px;
+        opacity: 0;
+    }
+
+    &.is-closed {
+        visibility: hidden;
+        transform: scale(0.92);
         opacity: 0;
     }
 

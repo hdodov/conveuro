@@ -1,4 +1,4 @@
-function Dropdown(x, y) {
+function Dropdown() {
     this.loaded = false;
     this.destroyed = false;
     this.onDestroy = null;
@@ -34,8 +34,6 @@ function Dropdown(x, y) {
     this.btnClose.addEventListener("click", function () {
         this.close();
     }.bind(this));
-
-    this.setPosition(x, y);
 } Dropdown.prototype = {
     setPosition: function (x, y) {
         this.elem.style.left = x + "px";
@@ -135,7 +133,7 @@ function Dropdown(x, y) {
     },
 
     close: function () {
-        this.elem.classList.add("is-hidden");
+        this.elem.classList.add("is-closed");
 
         var that = this;
         this.elem.addEventListener("transitionend", function () {
