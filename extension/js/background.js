@@ -1,1 +1,693 @@
-!function(){"use strict";function r(r){for(var e=[r.selectedText,r.startContainerText,r.endContainerText,r.commonAncestorText],s=null,o=null,t=0;t<e.length;t++)"string"==typeof e[t]&&("string"!=typeof s&&(s=n(e[t])),"number"!=typeof o&&(o=a(e[t])));return{currency:s,value:o}}function a(r){var a=r.match(/\d[\d\., ]*k?/gi);if(a&&1===a.length){var n=parseFloat(a[0].replace(/[^\d\.]/g,""));return a[0].match(/k/i)&&(n*=1e3),n}return null}function n(r){var a=d(function(a,n){return-1!==r.indexOf(n)});if(1===o(a))for(var n in a)return n;var e=d(function(a){var n=0;return a.symbols.forEach(function(a){-1!==r.indexOf(a)&&n++}),n>0&&n}),s=d(function(a){var n=0;return a.words.forEach(function(a){r.match(new RegExp(a,"i"))&&n++}),n>0&&n});e=i(e),s=i(s);var t=Object.keys(l(e,s));return(t=t.sort(function(r,a){return h[r]&&h[a]?h[a].share-h[r].share:0})).length>0?t[0]:null}function e(r,a){var n=[];for(var e in a)n.push({currency:e,name:h[e].name,value:f(e,u(r*a[e],3),!1),rate:u(a[e],5)});return n}function s(r,a,n){var e="https://api.fixer.io/latest?base="+r,s=new XMLHttpRequest;return s.addEventListener("readystatechange",function(){if(4===this.readyState)if(200==this.status){var r=null;try{r=JSON.parse(this.responseText)}catch(r){n({message:"Couldn't parse response data."})}r&&r.rates&&a(r.rates)}else n({message:this.statusText,code:this.status})}),s.open("GET",e,!0),s.send(null),s}function o(r){var a=0;for(var n in r)a++;return a}function t(r,a){var n={};for(var e in r)a(r[e],e)&&(n[e]=r[e]);return n}function i(r){var a;for(var n in r)(r[n]>a||void 0===a)&&(a=r[n]);return t(r,function(r){return r===a})}function l(){var r={};return[].forEach.call(arguments,function(a){if("object"==typeof a&&null!==a)for(var n in a)r[n]=a[n]}),r}function u(r,a){if("number"!=typeof r)return r;var n=r.toString().split("."),e=n[0],s=n[1]||"",o=m(e),t=a-e.length,i="";if(1==t&&(t=2),t>0)for(var l=0;l<t;l++)i+=void 0!==s[l]?s[l]:"0";var u=o;return i.length>0&&(u+="."+i),u}function m(r){if("string"==typeof r||"number"==typeof r){var a=parseInt(r);if("number"!=typeof a||0==a)return r}for(var n="",e=0,s=r.length-1;s>=0;s--)n=r[s]+n,++e>=3&&s>0&&(n=","+n,e=0);return n}function d(r){var a={};for(var n in h){var e=r(h[n],n);!1!==e&&(a[n]=e)}return a}function f(r,a,n){var e=a;return h[r]&&(e=(e=(e=h[r].format).replace(/\%d/g,a)).replace(/\%s/g,!1!==n?r:"")),"string"==typeof e?e.trim():a}var h={AUD:{name:"Australian Dollar",share:6.9,symbols:["$","A$"],format:"$%d %s",words:["australian","dollar"]},BGN:{name:"Bulgarian Lev",share:null,symbols:["лв","lv"],format:"%dлв",words:["bulgarian","lev","българ","лев"]},BRL:{name:"Brazilian Real",share:1,symbols:["$","R$"],format:"R$%d %s",words:["brazilian","real","reais"]},CAD:{name:"Canadian Dollar",share:5.1,symbols:["$","Can$","C$"],format:"$%d %s",words:["canadian","dollar"]},CHF:{name:"Swiss Franc",share:4.8,symbols:["Fr.","SFr."],format:"%d francs",words:["swiss","franc","franken","franchi"]},CNY:{name:"Chinese Yuan",share:4,symbols:["元","¥"],format:"¥ %d",words:["chinese","yuan","人民币"]},CZK:{name:"Czech Koruna",share:null,symbols:["Kč"],format:"%d Kč",words:["czech","koruna","česká","koruny","české"]},DKK:{name:"Danish Krone",share:null,symbols:["kr","kr."],format:"%d kroner",words:["danish","krone","kroner"]},EUR:{name:"Euro",share:37.4,symbols:["€"],format:"€%d %s",words:["euro"]},GBP:{name:"British Pound",share:12.8,symbols:["£"],format:"£%d %s",words:["great","british","pound","sterling","quid"]},HKD:{name:"Hong Kong Dollar",share:1.7,symbols:["$","HK$","元"],format:"$%d %s",words:["hong","kong","dollar","港元","Góng yùn"]},HRK:{name:"Croatian Kuna",share:null,symbols:["kn"],format:"%d kn",words:["croatian","hrvatska","kuna"]},HUF:{name:"Hungarian Forint",share:null,symbols:["Ft"],format:"%d Ft",words:["hungarian","forint"]},IDR:{name:"Indonesian Rupiah",share:null,symbols:["Rp"],format:"Rp %d",words:["indonesian","rupiah","perak"]},ILS:{name:"Israeli New Shekel",share:null,symbols:["₪"],format:"₪%d %s",words:["israeli","shekel","שֶׁקֶל","חָדָשׁ‎","شيقل","جديد","shēqel","jadīd"]},INR:{name:"Indian Rupee",share:1.1,symbols:["₹"],format:"₹%d %s",words:["indian","rupee","rupiya"]},JPY:{name:"Japanese Yen",share:21.6,symbols:["¥","円","圓"],format:"¥%d %s",words:["japanese","yen","円","圓"]},KRW:{name:"South Korean Won",share:1.7,symbols:["₩"],format:"₩%d %s",words:["south","korea","won","원"]},MXN:{name:"Mexican Peso",share:1.9,symbols:["$","Mex$"],format:"$%d %s",words:["mexican","peso","mexicano"]},MYR:{name:"Malaysian Ringgit",share:null,symbols:["RM"],format:"RM%d",words:["malaysian","ringgit"]},NOK:{name:"Norwegian Krone",share:1.7,symbols:["kr"],format:"%d kr",words:["norwegian","krone"]},NZD:{name:"New Zealand Dollar",share:2.1,symbols:["$"],format:"$%d %s",words:["zealand","dollar","Tāra","Aotearoa","kiwi"]},PHP:{name:"Philippine Peso",share:null,symbols:["₱"],format:"₱%d %s",words:["philippine","peso","piso","pilipinas"]},PLN:{name:"Polish Zloty",share:null,symbols:["zł"],format:"%dzł",words:["polish","zloty","złoty"]},RON:{name:"Romanian Leu",share:null,symbols:["leu"],format:"%d lei",words:["romanian","leu","lei"]},RUB:{name:"Russian Ruble",share:1.1,symbols:["₽","руб"],format:"%d₽",words:["russian","ruble","рубль","рубли́"]},SEK:{name:"Swedish Krona",share:2.2,symbols:["kr"],format:"%d kr",words:["swedish","krona","kronor","spänn","pix","daler","riksdaler","crowns","bagare","bagis","lök"]},SGD:{name:"Singapore Dollar",share:1.8,symbols:["$","S$"],format:"S$%d %s",words:["singapore","dollar"]},THB:{name:"Thai Baht",share:null,symbols:["฿"],format:"฿%d %s",words:["thai","baht","บาท"]},TRY:{name:"Turkish Lira",share:1.4,symbols:["₺"],format:"₺%d %s",words:["turkish","lira","Türk","lirası"]},USD:{name:"US Dollar",share:80.6,symbols:["$"],format:"$%d %s",words:["united","states","US","U.S.","american","dollar","buck"]},ZAR:{name:"South African Rand",share:1,symbols:["R"],format:"R %d",words:["south","african","rand"]}};chrome.runtime.onMessage.addListener(function(a,n,e){if(n.tab&&a.getWorthy&&a.data){var s=r(a.data);return e({title:f(s.currency,u(s.value,3)),currency:s.currency,value:s.value}),!0}}),chrome.runtime.onMessage.addListener(function(r,a,n){if(a.tab&&r.getRates)return s(r.currency,function(a){n({list:e(r.value,a)})},function(r){n(r)}),!0})}();
+;(function() {
+"use strict";
+
+// Most traded currencies: https://en.wikipedia.org/wiki/Template:Most_traded_currencies
+
+var CURRENCIES = {
+  "AUD": { // https://en.wikipedia.org/wiki/Australian_dollar
+    "name": "Australian Dollar",
+    "share": 6.9,
+    "symbols": ["$", "A$"],
+    "format": "$%d %s",
+    "words": [
+      "australian",
+      "dollar"
+    ]
+  },
+  "BGN": { // https://en.wikipedia.org/wiki/Bulgarian_lev
+    "name": "Bulgarian Lev",
+    "share": null,
+    "symbols": ["лв", "lv"],
+    "format": "%dлв",
+    "words": [
+      "bulgarian",
+      "lev",
+      "българ",
+      "лев"
+    ]
+  },
+  "BRL": { // https://en.wikipedia.org/wiki/Brazilian_real
+    "name": "Brazilian Real",
+    "share": 1,
+    "symbols": ["$", "R$"],
+    "format": "R$%d %s",
+    "words": [
+      "brazilian",
+      "real",
+      "reais"
+    ]
+  },
+  "CAD": { // https://en.wikipedia.org/wiki/Canadian_dollar
+    "name": "Canadian Dollar",
+    "share": 5.1,
+    "symbols": ["$", "Can$", "C$"],
+    "format": "$%d %s",
+    "words": [
+      "canadian",
+      "dollar"
+    ]
+  },
+  "CHF": { // https://en.wikipedia.org/wiki/Swiss_franc
+    "name": "Swiss Franc",
+    "share": 4.8,
+    "symbols": ["Fr.", "SFr."],
+    "format": "%d francs",
+    "words": [
+      "swiss",
+      "franc",
+      "franken",
+      "franchi"
+    ]
+  },
+  "CNY": { // https://en.wikipedia.org/wiki/Renminbi
+    "name": "Chinese Yuan",
+    "share": 4.0,
+    "symbols": ["元", "¥"],
+    "format": "¥ %d",
+    "words": [
+      "chinese",
+      "yuan",
+      "人民币"
+    ]
+  },
+  "CZK": { // https://en.wikipedia.org/wiki/Czech_koruna
+    "name": "Czech Koruna",
+    "share": null,
+    "symbols": ["Kč"],
+    "format": "%d Kč",
+    "words": [
+      "czech",
+      "koruna",
+      "česká",
+      "koruny",
+      "české"
+    ]
+  },
+  "DKK": { // https://en.wikipedia.org/wiki/Danish_krone
+    "name": "Danish Krone",
+    "share": null,
+    "symbols": ["kr", "kr."],
+    "format": "%d kroner",
+    "words": [
+      "danish",
+      "krone",
+      "kroner"
+    ]
+  },
+  "EUR": { // https://en.wikipedia.org/wiki/Euro
+    "name": "Euro",
+    "share": 37.4,
+    "symbols": ["€"],
+    "format": "€%d %s",
+    "words": [
+      "euro"
+    ]
+  },
+  "GBP": { // https://en.wikipedia.org/wiki/Pound_sterling
+    "name": "British Pound",
+    "share": 12.8,
+    "symbols": ["£"],
+    "format": "£%d %s",
+    "words": [
+      "great",
+      "british",
+      "pound",
+      "sterling",
+      "quid"
+    ]
+  },
+  "HKD": { // https://en.wikipedia.org/wiki/Hong_Kong_dollar
+    "name": "Hong Kong Dollar",
+    "share": 1.7,
+    "symbols": ["$", "HK$", "元"],
+    "format": "$%d %s",
+    "words": [
+      "hong",
+      "kong",
+      "dollar",
+      "港元",
+      "Góng yùn"
+    ]
+  },
+  "HRK": { // https://en.wikipedia.org/wiki/Croatian_kuna
+    "name": "Croatian Kuna",
+    "share": null,
+    "symbols": ["kn"],
+    "format": "%d kn",
+    "words": [
+      "croatian",
+      "hrvatska",
+      "kuna"
+    ]
+  },
+  "HUF": { // https://en.wikipedia.org/wiki/Hungarian_forint
+    "name": "Hungarian Forint",
+    "share": null,
+    "symbols": ["Ft"],
+    "format": "%d Ft",
+    "words": [
+      "hungarian",
+      "forint"
+    ]
+  },
+  "IDR": { // https://en.wikipedia.org/wiki/Indonesian_rupiah
+    "name": "Indonesian Rupiah",
+    "share": null,
+    "symbols": ["Rp"],
+    "format": "Rp %d",
+    "words": [
+      "indonesian",
+      "rupiah",
+      "perak"
+    ]
+  },
+  "ILS": { // https://en.wikipedia.org/wiki/Israeli_new_shekel
+    "name": "Israeli New Shekel",
+    "share": null,
+    "symbols": ["₪"],
+    "format": "₪%d %s",
+    "words": [
+      "israeli",
+      "shekel",
+      "שֶׁקֶל",
+      "חָדָשׁ‎",
+      "شيقل",
+      "جديد",
+      "shēqel",
+      "jadīd"
+    ]
+  },
+  "INR": { // https://en.wikipedia.org/wiki/Indian_rupee
+    "name": "Indian Rupee",
+    "share": 1.1,
+    "symbols": ["₹"],
+    "format": "₹%d %s",
+    "words": [
+      "indian",
+      "rupee",
+      "rupiya"
+    ]
+  },
+  "JPY": { // https://en.wikipedia.org/wiki/Japanese_yen
+    "name": "Japanese Yen",
+    "share": 21.6,
+    "symbols": ["¥", "円", "圓"],
+    "format": "¥%d %s",
+    "words": [
+      "japanese",
+      "yen",
+      "円",
+      "圓"
+    ]
+  },
+  "KRW": { // https://en.wikipedia.org/wiki/South_Korean_won
+    "name": "South Korean Won",
+    "share": 1.7,
+    "symbols": ["₩"],
+    "format": "₩%d %s",
+    "words": [
+      "south",
+      "korea",
+      "won",
+      "원"
+    ]
+  },
+  "MXN": { // https://en.wikipedia.org/wiki/Mexican_peso
+    "name": "Mexican Peso",
+    "share": 1.9,
+    "symbols": ["$", "Mex$"],
+    "format": "$%d %s",
+    "words": [
+      "mexican",
+      "peso"
+    ]
+  },
+  "MYR": { // https://en.wikipedia.org/wiki/Malaysian_ringgit
+    "name": "Malaysian Ringgit",
+    "share": null,
+    "symbols": ["RM"],
+    "format": "RM%d",
+    "words": [
+      "malaysian",
+      "ringgit"
+    ]
+  },
+  "NOK": { // https://en.wikipedia.org/wiki/Norwegian_krone
+    "name": "Norwegian Krone",
+    "share": 1.7,
+    "symbols": ["kr"],
+    "format": "%d kr",
+    "words": [
+      "norwegian",
+      "krone"
+    ]
+  },
+  "NZD": { // https://en.wikipedia.org/wiki/New_Zealand_dollar
+    "name": "New Zealand Dollar",
+    "share": 2.1,
+    "symbols": ["$"],
+    "format": "$%d %s",
+    "words": [
+      "zealand",
+      "dollar",
+      "Tāra",
+      "Aotearoa",
+      "kiwi"
+    ]
+  },
+  "PHP": { // https://en.wikipedia.org/wiki/Philippine_peso
+    "name": "Philippine Peso",
+    "share": null,
+    "symbols": ["₱"],
+    "format": "₱%d %s",
+    "words": [
+      "philippine",
+      "peso",
+      "piso",
+      "pilipinas"
+    ]
+  },
+  "PLN": { // https://en.wikipedia.org/wiki/Polish_z%C5%82oty
+    "name": "Polish Zloty",
+    "share": null,
+    "symbols": ["zł"],
+    "format": "%dzł",
+    "words": [
+      "polish",
+      "zloty",
+      "złoty"
+    ]
+  },
+  "RON": { // https://en.wikipedia.org/wiki/Romanian_leu
+    "name": "Romanian Leu",
+    "share": null,
+    "symbols": ["leu"],
+    "format": "%d lei",
+    "words": [
+      "romanian",
+      "leu",
+      "lei"
+    ]
+  },
+  "RUB": { // https://en.wikipedia.org/wiki/Russian_ruble
+    "name": "Russian Ruble",
+    "share": 1.1,
+    "symbols": ["₽", "руб"],
+    "format": "%d₽",
+    "words": [
+      "russian",
+      "ruble",
+      "рубль",
+      "рубли́"
+    ]
+  },
+  "SEK": { // https://en.wikipedia.org/wiki/Swedish_krona
+    "name": "Swedish Krona",
+    "share": 2.2,
+    "symbols": ["kr"],
+    "format": "%d kr",
+    "words": [
+      "swedish",
+      "krona",
+      "kronor",
+      "spänn",
+      "pix",
+      "daler",
+      "riksdaler",
+      "crowns",
+      "bagare",
+      "bagis",
+      "lök"
+    ]
+  },
+  "SGD": { // https://en.wikipedia.org/wiki/Singapore_dollar
+    "name": "Singapore Dollar",
+    "share": 1.8,
+    "symbols": ["$", "S$"],
+    "format": "S$%d %s",
+    "words": [
+      "singapore",
+      "dollar"
+    ]
+  },
+  "THB": { // https://en.wikipedia.org/wiki/Thai_baht
+    "name": "Thai Baht",
+    "share": null,
+    "symbols": ["฿"],
+    "format": "฿%d %s",
+    "words": [
+      "thai",
+      "baht",
+      "บาท"
+    ]
+  },
+  "TRY": { // https://en.wikipedia.org/wiki/Turkish_lira
+    "name": "Turkish Lira",
+    "share": 1.4,
+    "symbols": ["₺"],
+    "format": "₺%d %s",
+    "words": [
+      "turkish",
+      "lira",
+      "Türk",
+      "lirası"
+    ]
+  },
+  "USD": { // https://en.wikipedia.org/wiki/United_States_dollar
+    "name": "US Dollar",
+    "share": 80.6,
+    "symbols": ["$"],
+    "format": "$%d %s",
+    "words": [
+      "united",
+      "states",
+      "u.s.",
+      "american",
+      "dollar",
+      "buck"
+    ]
+  },
+  "ZAR": { // https://en.wikipedia.org/wiki/South_African_rand
+    "name": "South African Rand",
+    "share": 1.0,
+    "symbols": ["R"],
+    "format": "R %d",
+    "words": [
+      "south",
+      "african",
+      "rand"
+    ]
+  }
+};
+function detectData(target) {
+    var texts = [
+        target.selectedText,
+        target.startContainerText,
+        target.endContainerText,
+        target.commonAncestorText
+    ];
+
+    var currency = null,
+        value = null;
+
+    for (var i = 0; i < texts.length; i++) {
+        if (typeof texts[i] == "string") {
+            if (typeof currency != "string") {
+                currency = detectCurrency(texts[i]);
+            }
+
+            if (typeof value != "number") {
+                value = detectNumber(texts[i]);
+            }
+        }
+    }
+
+    return {
+        currency: currency,
+        value: value
+    };
+}
+
+function detectNumber(text) {
+    var value = text.match(/\d[\d\., ]*k?/ig);
+
+    if (value && value.length === 1) {
+        var number = parseFloat(value[0].replace(/[^\d\.]/g, ''));
+
+        if (value[0].match(/k/i)) {
+            number *= 1000;
+        }
+
+        return number;
+    }
+
+    return null;
+}
+
+function detectCurrency(text) {
+    var c_codes = filterCurrencies(function (currency, code) {
+        return (text.indexOf(code) !== -1) ? true : false;
+    });
+
+    // Codes (USD, GBP, EUR...) have the highest weight. They are the most
+    // unique identity of a currency. If a single one is found, return it,
+    // otherwise proceed to elimination by daily share value.
+    if (obj_length(c_codes) === 1) {
+        for (var k in c_codes) {
+            return k;
+        }
+    }
+
+    var c_symbols = filterCurrencies(function (currency) {
+        var matched = 0;
+
+        currency.symbols.forEach(function (symbol) {
+            if (text.indexOf(symbol) !== -1) {
+                matched++;
+            }
+        });
+
+        return (matched > 0) ? matched : false;
+    });
+
+    var c_keywords = filterCurrencies(function (currency) {
+        var matched = 0;
+
+        currency.words.forEach(function (word) {
+            if (text.match(new RegExp(word, 'i'))) {
+                matched++;
+            }
+        });
+        
+        return (matched > 0) ? matched : false;
+    });
+
+    c_symbols = obj_filter_highest(c_symbols);
+    c_keywords = obj_filter_highest(c_keywords);
+    
+    var currencies = Object.keys(obj_merge(c_symbols, c_keywords));
+    currencies = currencies.sort(function (a, b) {
+        if (CURRENCIES[a] && CURRENCIES[b]) {
+            return CURRENCIES[b].share - CURRENCIES[a].share;
+        } else {
+            return 0;
+        }
+    });
+
+    if (currencies.length > 0) {
+        return currencies[0];
+    } else {
+        return null;
+    }
+}
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (sender.tab && request.getWorthy && request.data) {
+        var detected = detectData(request.data);
+
+        sendResponse({
+            title: formatCurrencyValue(detected.currency, beautifyValue(detected.value, 3)),
+            currency: detected.currency,
+            value: detected.value
+        });
+
+        return true;
+    }
+});
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (sender.tab && request.getRates) {
+        currencyAPICall(request.currency, function (rates) {
+            sendResponse({list: getRatesList(request.value, rates)});
+        }, function (error) {
+            sendResponse(error);
+        });
+
+        return true;
+    }
+});
+
+function getRatesList(value, rates) {
+    var list = [];
+
+    for (var k in rates) {
+        list.push({
+            currency: k,
+            name: CURRENCIES[k].name,
+            value: formatCurrencyValue(k, beautifyValue(value * rates[k], 3), false),
+            rate: beautifyValue(rates[k], 5)
+        });
+    }
+
+    return list;
+}
+
+function currencyAPICall(currency, onComplete, onError) {
+    var url = "https://api.fixer.io/latest?base=" + currency,
+        req = new XMLHttpRequest();
+
+    req.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            if (this.status == 200) {
+                var data = null;
+
+                try {
+                    data = JSON.parse(this.responseText);
+                } catch (e) {
+                    onError({
+                        message: "Couldn't parse response data."
+                    });
+                }
+
+                if (data && data.rates) {
+                    onComplete(data.rates);
+                }
+            } else {
+                onError({
+                    message: this.statusText,
+                    code: this.status
+                });
+            }
+        } 
+    });
+
+    req.open("GET", url, true);
+    req.send(null);
+
+    return req;
+}
+function obj_length(obj) {
+    var i = 0;
+
+    for (var k in obj) {
+        i++;
+    }
+
+    return i;
+}
+
+function obj_filter(obj, predicate) {
+    var passing = {};
+
+    for (var k in obj) {
+        if (predicate(obj[k], k)) {
+            passing[k] = obj[k];
+        }
+    }
+
+    return passing;
+}
+
+function obj_filter_highest(obj) {
+    var max;
+
+    for (var k in obj) {
+        if (obj[k] > max || max === undefined) {
+            max = obj[k];
+        }
+    }
+
+    return obj_filter(obj, function (value) {
+        return (value === max);
+    });
+}
+
+function obj_merge() {
+    var result = {};
+
+    [].forEach.call(arguments, function (arg) {
+        if (typeof arg === "object" && arg !== null) {
+            for (var k in arg) {
+                result[k] = arg[k];
+            }
+        }
+    });
+
+    return result;
+}
+
+function beautifyValue(value, digits) {
+    if (typeof value !== "number") {
+        return value;
+    }
+
+    var split = value.toString().split("."),
+        valueWhole = split[0],
+        valueDecimal = split[1] || "",
+        shownWhole = addValueCommas(valueWhole),
+        shownDecimalsCount = digits - valueWhole.length,
+        shownDecimals = "";
+
+    // Either show no digits, or at least two.
+    if (shownDecimalsCount == 1) {
+        shownDecimalsCount = 2;
+    }
+
+    if (shownDecimalsCount > 0) {
+        for (var i = 0; i < shownDecimalsCount; i++) {
+            shownDecimals += (valueDecimal[i] !== undefined) ? valueDecimal[i] : "0";
+        }
+    }
+
+    var result = shownWhole;
+    if (shownDecimals.length > 0) {
+        result += "." + shownDecimals;
+    }
+
+    return result;
+}
+
+function addValueCommas(value) {
+    if (typeof value == "string" || typeof value == "number") {
+        var parsed = parseInt(value);
+
+        if (typeof parsed != "number" || parsed == 0) {
+            return value;
+        }
+    }
+    
+    var result = "",
+        counter = 0;
+
+    for (var i = value.length - 1; i >= 0; i--) {
+        result = value[i] + result;
+        counter++;
+
+        if (counter >= 3 && i > 0) {
+            result = "," + result;
+            counter = 0;
+        }
+    }
+
+    return result;
+}
+
+function filterCurrencies(predicate) {
+    var passing = {};
+
+    for (var k in CURRENCIES) {
+        var result = predicate(CURRENCIES[k], k);
+
+        if (result !== false) {
+            passing[k] = result;
+        }
+    }
+
+    return passing;
+}
+
+function formatCurrencyValue(code, value, showCode) {
+    var result = value;
+
+    if (CURRENCIES[code]) {
+        result = CURRENCIES[code].format;
+        result = result.replace(/\%d/g, value);
+        result = result.replace(/\%s/g, (showCode !== false) ? code : "");
+    }
+
+    if (typeof result === "string") {
+        return result.trim();
+    } else {
+        return value;
+    }
+}
+}());

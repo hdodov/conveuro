@@ -22,20 +22,18 @@ function Dropdown(x, y) {
     this.btnMore = this.elem.getElementsByClassName("js-conveuro-more")[0];
     this.btnClose = this.elem.getElementsByClassName("js-conveuro-close")[0];
 
-    var that = this;
-
     this.btnMore.addEventListener("click", function () {
         this.classList.add("is-hidden");
 
-        that.list.style.maxHeight = that.list.offsetHeight + "px";
-        that.list.childNodes.forEach(function (node) {
+        this.list.style.maxHeight = this.list.offsetHeight + "px";
+        this.list.childNodes.forEach(function (node) {
             node.classList.remove("is-hidden");
         });
-    });
+    }.bind(this));
 
     this.btnClose.addEventListener("click", function () {
-        that.close();
-    });
+        this.close();
+    }.bind(this));
 
     this.setPosition(x, y);
 } Dropdown.prototype = {
@@ -57,23 +55,22 @@ function Dropdown(x, y) {
         this.list.innerHTML = "";
         this.btnMore.classList.add("is-hidden");
 
-        var that = this;
         list.forEach(function (data, i) {
-            var item = that.createListItem(data);
-            that.list.appendChild(item);
+            var item = this.createListItem(data);
+            this.list.appendChild(item);
 
             if (i >= 3) {
                 item.classList.add("is-hidden");
-                that.btnMore.classList.remove("is-hidden");
+                this.btnMore.classList.remove("is-hidden");
             }
-        });
+        }.bind(this));
     },
 
     renderPlaceholderList: function (itemsCount) {
         var data = {
-            value: "----------",
-            rate: "",
-            currency: "-----"
+            value:      "----------",
+            rate:       "-------",
+            currency:   "----"
         };
 
         this.list.innerHTML = "";
@@ -116,6 +113,23 @@ function Dropdown(x, y) {
         }
     },
 
+    addClickClose: function () {
+        this.clickCloseHandler = function (event) {
+            if (!elementIsInDropdown(event.target)) {
+                this.close();
+            }
+        }.bind(this);
+
+        document.addEventListener("click", this.clickCloseHandler);
+    },
+
+    removeClickClose: function () {
+        if (typeof this.clickCloseHandler == "function") {
+            document.removeEventListener("click", this.clickCloseHandler);
+            this.clickCloseHandler = null;
+        }
+    },
+
     show: function () {
         this.elem.classList.remove("is-hidden");
     },
@@ -143,6 +157,7 @@ function Dropdown(x, y) {
         }
 
         this.elem.parentElement.removeChild(this.elem);
+        this.removeClickClose();
 
         this.elem = null;
         this.title = null;

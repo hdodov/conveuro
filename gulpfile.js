@@ -6,12 +6,15 @@ var uglify = require("gulp-uglify");
 var concat = require("gulp-concat");
 
 gulp.task('content_script', function () {
-    gulp.src('src/js/content_script/*.js')
+    gulp.src([
+        'src/js/content_script/_config.js',
+        'src/js/content_script/*.js'
+    ])
         .pipe(concat('content.js'))
         .pipe(iife({
             useStrict: true
         }))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest('extension/js'));
 });
 
@@ -21,7 +24,7 @@ gulp.task('event_page', function () {
         .pipe(iife({
             useStrict: true
         }))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest('extension/js'));
 });
 
@@ -34,7 +37,8 @@ gulp.task('sass', function () {
 });
 
 gulp.task("main", function () {
-    gulp.watch('src/js/**/*.js', ['content_script', 'event_page']);
+    gulp.watch('src/js/content_script/*.js', ['content_script']);
+    gulp.watch('src/js/event_page/*.js', ['event_page']);
     gulp.watch('src/sass/*.scss', ['sass']);
 });
 
