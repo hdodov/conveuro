@@ -20,7 +20,7 @@
   border-radius: 4px;
   transition: margin 0.25s ease, visibility 0.25s ease, opacity 0.25s ease;
   overflow: hidden;
-  z-index: 2147483647 !important; }
+  z-index: 2147480000; }
   .conveuro-dropdown.is-hidden {
     visibility: hidden;
     margin-top: 10px;

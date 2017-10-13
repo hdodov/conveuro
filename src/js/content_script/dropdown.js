@@ -23,7 +23,7 @@ function Dropdown(x, y) {
     this.btnClose = this.elem.getElementsByClassName("js-conveuro-close")[0];
 
     this.btnMore.addEventListener("click", function () {
-        this.classList.add("is-hidden");
+        this.btnMore.classList.add("is-hidden");
 
         this.list.style.maxHeight = this.list.offsetHeight + "px";
         this.list.childNodes.forEach(function (node) {

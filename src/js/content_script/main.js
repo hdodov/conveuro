@@ -51,6 +51,8 @@ function createDropdown(position, data) {
     dragger.init();
     dragger.onStart = function () {
         dropdown.removeClickClose();
+        dropdown.elem.style.zIndex = CONFIG.dropdown.zIndex;
+        CONFIG.dropdown.zIndex++;
     };
 
     dropdown.onDestroy = function () {

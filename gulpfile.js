@@ -14,7 +14,7 @@ gulp.task('content_script', function () {
         .pipe(iife({
             useStrict: true
         }))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest('extension/js'));
 });
 
@@ -24,7 +24,7 @@ gulp.task('event_page', function () {
         .pipe(iife({
             useStrict: true
         }))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest('extension/js'));
 });
 
