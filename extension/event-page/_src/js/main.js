@@ -1,4 +1,10 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.getCurrencies) {
+        sendResponse(CURRENCIES);
+    }
+});
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (sender.tab && request.getWorthy && request.data) {
         var detected = detectData(request.data);
 

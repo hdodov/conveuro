@@ -1,50 +1,65 @@
 var gulp = require("gulp");
 var iife = require("gulp-iife");
 var sass = require("gulp-sass");
-var gulpif = require("gulp-if");
 var uglify = require("gulp-uglify");
 var concat = require("gulp-concat");
 
-gulp.task('content_script', function () {
-    gulp.src([
-        'src/js/content_script/_config.js',
-        'src/js/content_script/*.js'
-    ])
-        .pipe(concat('content.js'))
-        .pipe(iife({
-            useStrict: true
-        }))
-        .pipe(uglify())
-        .pipe(gulp.dest('extension/js'));
-});
+var content_script_src = 'extension/content-script/',
+    event_page_src = 'extension/event-page/',
+    popup_src = 'extension/popup/';
 
-gulp.task('event_page', function () {
-    gulp.src('src/js/event_page/*.js')
-        .pipe(concat('background.js'))
-        .pipe(iife({
-            useStrict: true
-        }))
-        .pipe(uglify())
-        .pipe(gulp.dest('extension/js'));
-});
+function sourceTask(name, watchPath, mainFunc) {
+    var watching = false;
 
-gulp.task('sass', function () {
-    gulp.src('src/sass/*.scss')
-        .pipe(sass({
-            outputStyle: "nested"
-        }))
-        .pipe(gulp.dest('extension/css'));
-});
+    gulp.task(name, function () {
+        mainFunc();
 
-gulp.task("main", function () {
-    gulp.watch('src/js/content_script/*.js', ['content_script']);
-    gulp.watch('src/js/event_page/*.js', ['event_page']);
-    gulp.watch('src/sass/*.scss', ['sass']);
-});
+        if (!watching) {
+            gulp.watch(watchPath, [name]);
+            watching = true;
+        }
+    });
+}
+
+function sourceTaskJs(name, dir) {
+    var filesGlob = dir + '_src/js/*.js';
+
+    sourceTask(name, filesGlob, function () {
+        gulp.src([
+            dir + '_src/js/_config.js',
+            filesGlob
+        ])
+            .pipe(concat('script.js'))
+            .pipe(iife({
+                useStrict: true
+            }))
+            //.pipe(uglify())
+            .pipe(gulp.dest(dir + 'js/'));
+    });
+}
+
+function sourceTaskScss(name, dir) {
+    var filesGlob = dir + '_src/scss/*.scss';
+
+    sourceTask(name, filesGlob, function () {
+        gulp.src(filesGlob)
+            .pipe(sass({
+                outputStyle: "nested"
+            }))
+            .pipe(gulp.dest(dir + 'css/'));
+    });
+}
+
+sourceTaskJs('event-page:js', event_page_src);
+sourceTaskJs('content-script:js', content_script_src);
+sourceTaskScss('content-script:scss', content_script_src);
+sourceTaskJs('popup:js', popup_src);
+sourceTaskScss('popup:scss', popup_src);
 
 gulp.task("default", [
-    "content_script",
-    "event_page",
-    "sass",
-    "main"
+    "event-page:js",
+    "content-script:js",
+    "content-script:scss",
+    "popup:js",
+    "popup:scss"
 ]);

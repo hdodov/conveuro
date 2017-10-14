@@ -11,23 +11,24 @@
     "128": "icons/128.png"
   },
 
+  "permissions": [
+    "https://api.fixer.io/latest"
+  ],
+
   "web_accessible_resources": [
-    "js/*",
-    "img/*",
-    "css/*"
+    "img/**/*",
+    "content-script/**/*",
+    "event-page/**/*",
+    "popup/**/*"
   ],
 
   "browser_action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup/index.html"
   },
-
-  "permissions": [
-    "https://fixer.io/*"
-  ],
 
   "background": {
     "scripts": [
-      "js/background.js"
+      "event-page/js/script.js"
     ],
     "persistent": true
   },
@@ -36,10 +37,10 @@
     {
       "run_at": "document_start",
       "css": [
-        "css/main.css"
+        "content-script/css/main.css"
       ],
       "js": [
-        "js/content.js"
+        "content-script/js/script.js"
       ],
       "matches": [
         "file:///*",
