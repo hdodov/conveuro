@@ -1,7 +1,59 @@
-.currency-list {
-    border: 1px solid #ccc;
+body {
+    width: 280px;
+    margin: 0;
+    font-size: 16px;
+}
 
-    & > div {
-        background: #4d6;
+input {
+    outline: none;
+}
+
+.wrap {
+    position: relative;
+    margin: 1.2em;
+}
+
+.title {
+    text-align: center;
+}
+
+.hint {
+    font-size: 0.8em;
+    opacity: 0.8;
+    text-align: center;
+
+    span {
+        font-style: italic;
+        opacity: 0.5;
+    }
+}
+
+.conveuro-dropdown {
+    width: 100%;
+    margin-bottom: 1.2em;
+    position: absolute;
+        top: 0;
+        left: 0;
+
+    box-shadow: none;
+}
+
+.selectize-control {
+    .selectize-input {
+        display: block;
+    }
+
+    .selectize-dropdown {
+        .selectize-dropdown-content {
+            max-height: 8.6em;
+        }
+
+        .option {
+            .code {
+                float: right;
+                font-size: 0.9em;
+                font-weight: bold;
+            }
+        }
     }
 }

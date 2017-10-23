@@ -5,19 +5,31 @@
     <title>Conveuro</title>
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" type="text/css" href="external/dragula/dragula.min.css">
+    <script type="text/javascript" src="../content-script/_src/js/dropdown.js"></script>
+    <link rel="stylesheet" type="text/css" href="../content-script/css/main.css">
+
+    <link rel="stylesheet" type="text/css" href="external/selectize/dist/css/selectize.css">
+    <link rel="stylesheet" type="text/css" href="external/selectize/dist/css/selectize.default.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 
 <body>
-    <div id="allowed" class="currency-list">
+    <p class="title">Watched currencies:</p>
 
+    <div class="wrap">
+        <input class="input-currencies" type="text" placeholder="Search for currencies...">
+    </div>
+    
+    <div class="wrap">
+        <input class="input-convertor selectize-input" placeholder="Convert some value...">
+    </div>
+    
+    <div class="wrap converted-container">
+        <p class="hint">Type the value and a currency code <span>EUR</span>, symbol <span>$</span> or keyword <span>pound</span>.</p>
     </div>
 
-    <div id="ignored" class="currency-list">
-
-    </div>
-
-    <script type="text/javascript" src="external/dragula/dragula.min.js"></script>
+    <script type="text/javascript" src="external/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="external/selectize/dist/js/standalone/selectize.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
 </body>
 

@@ -5,21 +5,29 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (sender.tab && request.getWorthy && request.data) {
+    if (request.getWorthy && request.data) {
         var detected = detectData(request.data);
 
-        sendResponse({
-            title: formatCurrencyValue(detected.currency, beautifyValue(detected.value, 3)),
-            currency: detected.currency,
-            value: detected.value
-        });
+        if (
+            typeof detected.currency == "string" &&
+            typeof detected.value == "number" &&
+            parseInt(detected.value) != 0
+        ) {
+            sendResponse({
+                title: formatCurrencyValue(detected.currency, beautifyValue(detected.value, 3)),
+                currency: detected.currency,
+                value: detected.value
+            });
+        } else {
+            sendResponse(false);
+        }
 
         return true;
     }
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (sender.tab && request.getRates) {
+    if (request.getRates) {
         currencyAPICall(request.currency, function (rates) {
             sendResponse({list: getRatesList(request.value, rates)});
         }, function (error) {

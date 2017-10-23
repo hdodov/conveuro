@@ -1,6 +1,19 @@
 ;(function() {
 "use strict";
 
+var DEFAULTS = {
+    currencies: ["USD", "EUR", "JPY", "GBP", "AUD"]
+};
+
+chrome.runtime.onInstalled.addListener(function (details) {
+    chrome.storage.local.get(DEFAULTS, function (data) {
+        console.log("Existing data", data);
+
+        chrome.storage.local.set(data, function () {
+            console.log("Updated data.");
+        });
+    });
+});
 // Most traded currencies: https://en.wikipedia.org/wiki/Template:Most_traded_currencies
 
 var CURRENCIES = {
@@ -62,11 +75,14 @@ var CURRENCIES = {
   "CNY": { // https://en.wikipedia.org/wiki/Renminbi
     "name": "Chinese Yuan",
     "share": 4.0,
-    "symbols": ["元", "¥"],
+    "symbols": ["¥", "元", "RMB"],
     "format": "¥ %d",
     "words": [
       "chinese",
       "yuan",
+      "yuán",
+      "renminbi",
+      "rénmínbì",
       "人民币"
     ]
   },
@@ -370,7 +386,7 @@ var CURRENCIES = {
   "ZAR": { // https://en.wikipedia.org/wiki/South_African_rand
     "name": "South African Rand",
     "share": 1.0,
-    "symbols": ["R"],
+    "symbols": ["R "],
     "format": "R %d",
     "words": [
       "south",
@@ -487,21 +503,29 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (sender.tab && request.getWorthy && request.data) {
+    if (request.getWorthy && request.data) {
         var detected = detectData(request.data);
 
-        sendResponse({
-            title: formatCurrencyValue(detected.currency, beautifyValue(detected.value, 3)),
-            currency: detected.currency,
-            value: detected.value
-        });
+        if (
+            typeof detected.currency == "string" &&
+            typeof detected.value == "number" &&
+            parseInt(detected.value) != 0
+        ) {
+            sendResponse({
+                title: formatCurrencyValue(detected.currency, beautifyValue(detected.value, 3)),
+                currency: detected.currency,
+                value: detected.value
+            });
+        } else {
+            sendResponse(false);
+        }
 
         return true;
     }
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (sender.tab && request.getRates) {
+    if (request.getRates) {
         currencyAPICall(request.currency, function (rates) {
             sendResponse({list: getRatesList(request.value, rates)});
         }, function (error) {

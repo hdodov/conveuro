@@ -144,13 +144,14 @@ var DropdownManager = (function () {
         remove: remove
     };
 })();
-function Dropdown() {
+function Dropdown(container) {
+    this.container = container || document.body;
     this.loaded = false;
     this.destroyed = false;
     this.onDestroy = null;
 
     this.elem = document.createElement("div");
-    document.body.appendChild(this.elem);
+    this.container.appendChild(this.elem);
 
     this.elem.classList.add("conveuro-dropdown", "is-hidden");
     this.elem.innerHTML =
@@ -281,18 +282,9 @@ function Dropdown() {
     close: function () {
         this.elem.classList.add("is-closed");
 
-        var that = this;
-        this.elem.addEventListener("transitionend", function () {
-            that.destroy();
-        });
-
-        // If transitionend didn't trigger for some reason, wait some time and
-        // remove the dropdown from the DOM.
         setTimeout(function () {
-            if (!that.destroyed) {
-                that.destroy();
-            }
-        }, 5000);
+            this.destroy();
+        }.bind(this), 500);
     },
 
     destroy: function () {
@@ -300,9 +292,10 @@ function Dropdown() {
             return;
         }
 
-        this.elem.parentElement.removeChild(this.elem);
+        this.container.removeChild(this.elem);
         this.removeClickClose();
 
+        this.container = null;
         this.elem = null;
         this.title = null;
         this.list = null;
@@ -343,13 +336,7 @@ document.addEventListener("mouseup", function (event) {
             getWorthy: true,
             data: rangeData
         }, function (data) {
-            if (
-                data &&
-                typeof data.currency == "string" &&
-                typeof data.value == "number" &&
-                parseInt(data.value) != 0 &&
-                DropdownManager.exists(data.title) == false
-            ) {
+            if (data && !DropdownManager.exists(data.title)) {
                 createDropdown([event.pageX, event.pageY], data);   
             }
         });

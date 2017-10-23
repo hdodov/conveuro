@@ -12,7 +12,9 @@
   },
 
   "permissions": [
-    "https://api.fixer.io/latest"
+    "storage",
+    "https://api.fixer.io/latest",
+    "http://api.fixer.io/latest"
   ],
 
   "web_accessible_resources": [

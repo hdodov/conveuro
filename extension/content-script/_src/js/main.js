@@ -24,13 +24,7 @@ document.addEventListener("mouseup", function (event) {
             getWorthy: true,
             data: rangeData
         }, function (data) {
-            if (
-                data &&
-                typeof data.currency == "string" &&
-                typeof data.value == "number" &&
-                parseInt(data.value) != 0 &&
-                DropdownManager.exists(data.title) == false
-            ) {
+            if (data && !DropdownManager.exists(data.title)) {
                 createDropdown([event.pageX, event.pageY], data);   
             }
         });

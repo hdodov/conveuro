@@ -59,11 +59,14 @@ var CURRENCIES = {
   "CNY": { // https://en.wikipedia.org/wiki/Renminbi
     "name": "Chinese Yuan",
     "share": 4.0,
-    "symbols": ["元", "¥"],
+    "symbols": ["¥", "元", "RMB"],
     "format": "¥ %d",
     "words": [
       "chinese",
       "yuan",
+      "yuán",
+      "renminbi",
+      "rénmínbì",
       "人民币"
     ]
   },
@@ -367,7 +370,7 @@ var CURRENCIES = {
   "ZAR": { // https://en.wikipedia.org/wiki/South_African_rand
     "name": "South African Rand",
     "share": 1.0,
-    "symbols": ["R"],
+    "symbols": ["R "],
     "format": "R %d",
     "words": [
       "south",

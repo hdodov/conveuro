@@ -18,6 +18,7 @@
   color: #444;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
   box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   transition: transform 0.25s ease, margin 0.25s ease, visibility 0.25s ease, opacity 0.25s ease;
