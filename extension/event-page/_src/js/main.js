@@ -29,7 +29,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.getRates) {
         currencyAPICall(request.currency, function (rates) {
-            sendResponse({list: getRatesList(request.value, rates)});
+            getRatesList(request.value, rates, function (list) {
+                sendResponse({list: list});
+            });
         }, function (error) {
             sendResponse(error);
         });
@@ -38,23 +40,27 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 });
 
-function getRatesList(value, rates) {
-    var list = [];
+function getRatesList(value, rates, callback) {
+    chrome.storage.local.get("currencies", function (data) {
+        var list = [];
 
-    for (var k in rates) {
-        list.push({
-            currency: k,
-            name: CURRENCIES[k].name,
-            value: formatCurrencyValue(k, beautifyValue(value * rates[k], 3), false),
-            rate: beautifyValue(rates[k], 5)
+        data.currencies.forEach(function (currency) {
+            if (CURRENCIES[currency] && rates[currency]) {
+                list.push({
+                    currency: currency,
+                    name: CURRENCIES[currency].name,
+                    value: formatCurrencyValue(currency, beautifyValue(value * rates[currency], 3), false),
+                    rate: beautifyValue(rates[currency], 5)
+                });
+            }
         });
-    }
 
-    return list;
+        callback(list);
+    });
 }
 
 function currencyAPICall(currency, onComplete, onError) {
-    var url = "https://api.fixer.io/latest?base=" + currency,
+    var url = CONFIG.getAPIURL(currency),
         req = new XMLHttpRequest();
 
     req.addEventListener("readystatechange", function () {

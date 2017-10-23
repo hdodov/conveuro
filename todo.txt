@@ -1,5 +1,0 @@
-- Make API call to http or https according to visited site URL
-- On fireside Hearthstone gathering site, dropdown appears when selecting Map pin or "Tuesday, October 17, 2017"
-  https://eu.battle.net/hearthstone/en/fireside-gatherings/52268
-- On Electronic Star 359,00 BGN should be query for 359, not 35900. If there is a comma and less than 3 numbers after it, consider it as decimal point
-- Search for Conservation International -> 296.3 million. Words like "million" should be parsed.

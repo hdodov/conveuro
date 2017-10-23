@@ -8,14 +8,14 @@ function Dropdown(container) {
     this.container.appendChild(this.elem);
 
     this.elem.classList.add("conveuro-dropdown", "is-hidden");
-    this.elem.innerHTML =
-    '<p class="conveuro-title"></p>' +
-    '<div class="conveuro-list"></div>' +
-    '<div class="conveuro-error"></div>' +
-    '<div class="conveuro-footer">' +
-        '<p class="js-conveuro-more">see more...</p>' +
-        '<p class="js-conveuro-close">close</p>' +
-    '</div>';
+    this.elem.innerHTML = ''
+    +   '<p class="conveuro-title"></p>'
+    +   '<div class="conveuro-list"></div>'
+    +   '<div class="conveuro-error"></div>'
+    +   '<div class="conveuro-footer">'
+    +       '<p class="js-conveuro-more">see more...</p>'
+    +       '<p class="js-conveuro-close">close</p>'
+    +   '</div>';
 
     this.title = this.elem.getElementsByClassName("conveuro-title")[0];
     this.list = this.elem.getElementsByClassName("conveuro-list")[0];
@@ -27,6 +27,7 @@ function Dropdown(container) {
         this.btnMore.classList.add("is-hidden");
 
         this.list.style.maxHeight = this.list.offsetHeight + "px";
+        this.list.style.overflow = "auto";
         this.list.childNodes.forEach(function (node) {
             node.classList.remove("is-hidden");
         });
@@ -43,9 +44,11 @@ function Dropdown(container) {
 
     createListItem: function (data) {
         var item = document.createElement("div");
-        item.innerHTML =
-            '<p>' + data.value + '</p>' +
-            '<small title="' + data.name + '">' + data.rate + ' ' + data.currency + '</small>';
+        item.innerHTML = ''
+        +   '<p>' + data.value + '</p>'
+        +   '<small title="' + data.name + '">'
+        +       data.rate + ' ' + data.currency
+        +   '</small>';
 
         return item;
     },
@@ -74,6 +77,7 @@ function Dropdown(container) {
 
         this.list.innerHTML = "";
         this.btnMore.classList.add("is-hidden");
+
         for (var i = 0; i < itemsCount; i++) {
             this.list.appendChild(this.createListItem(data));
         }

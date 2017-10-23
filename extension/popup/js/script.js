@@ -5,6 +5,7 @@
     var _$input = $(".input-convertor")
     ,   _$container = $(".converted-container")
     ,   _dropdown = null
+    ,   _lastRequestTimestamp = null
     ,   _shownConversion = null;
 
     function newDropdown() {
@@ -18,6 +19,7 @@
 
         _dropdown.onDestroy = function () {
             _dropdown = null;
+            _shownConversion = null;
         };
     }
 
@@ -30,12 +32,20 @@
         _dropdown.setTitle(data.title);
         _dropdown.setLoading(true);
 
+        var timestamp = Date.now();
+        _lastRequestTimestamp = timestamp;
+
         chrome.runtime.sendMessage({
             getRates: true,
             currency: data.currency,
             value: data.value
         }, function (response) {
-            console.log(response);
+            // Check if this is a response to the latest request in case
+            // multiple ones were made.
+            if (timestamp !== _lastRequestTimestamp) {
+                return;
+            }
+
             _dropdown.setLoaded(true);
 
             if (response.list) {
@@ -51,16 +61,12 @@
     }
 
     _$input.keyup(function () {
-        console.log("keyup", $(this).val());
-
         chrome.runtime.sendMessage({
             getWorthy: true,
             data: {
                 selectedText: _$input.val()
             }
         }, function (result) {
-            console.log(result);
-
             if (result && _shownConversion !== result.title) {
                 _shownConversion = result.title;
                 worthyConversion(result);

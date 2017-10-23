@@ -10,13 +10,17 @@ function detectData(target) {
         value = null;
 
     for (var i = 0; i < texts.length; i++) {
-        if (typeof texts[i] == "string") {
-            if (typeof currency != "string") {
-                currency = detectCurrency(texts[i]);
-            }
+        if (typeof texts[i] == "string" && typeof value != "number") {
+            value = detectNumber(texts[i]);
+        }
+    }
 
-            if (typeof value != "number") {
-                value = detectNumber(texts[i]);
+    // Detecting currencies is costly, so it's best to search only if a number
+    // is found.
+    if (typeof value == "number") {
+        for (var i = 0; i < texts.length; i++) {
+            if (typeof texts[i] == "string" && typeof currency != "string") {
+                currency = detectCurrency(texts[i]);
             }
         }
     }
@@ -28,16 +32,29 @@ function detectData(target) {
 }
 
 function detectNumber(text) {
-    var value = text.match(/\d[\d\., ]*k?/ig);
+    var regex = /([\d\., ]*\d)([a-z]?)/ig
+    ,   match = regex.exec(text);
 
-    if (value && value.length === 1) {
-        var number = parseFloat(value[0].replace(/[^\d\.]/g, ''));
+    if (match && match.length) {
+        var number = match[1],
+            modifier = match[2],
+            value = parseFloat(number.replace(/[^\d\.]/g, ''));
 
-        if (value[0].match(/k/i)) {
-            number *= 1000;
+        if (modifier) {
+            for (var k in CONFIG.modifierCharacters) {
+                if (modifier.match(new RegExp(k, "i"))) {
+                    value *= CONFIG.modifierCharacters[k];
+                }
+            }
+        } else {
+            for (var k in CONFIG.modifierWords) {
+                if (text.match(new RegExp(k, "i"))) {
+                    value *= CONFIG.modifierWords[k];
+                }
+            }
         }
 
-        return number;
+        return value;
     }
 
     return null;

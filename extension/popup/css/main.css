@@ -27,6 +27,8 @@ input {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 1;
+  /* to appear below selectize dropdown */
   box-shadow: none; }
 
 .selectize-control .selectize-input {

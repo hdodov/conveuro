@@ -1,6 +1,26 @@
 ;(function() {
 "use strict";
 
+var CONFIG = {
+    getAPIURL: function (currency) {
+        return "https://api.fixer.io/latest?base=" + currency;
+    },
+
+    modifierCharacters: {
+        "k": 1e3,
+        "m": 1e6,
+        "b": 1e9,
+        "t": 1e12
+    },
+
+    modifierWords: {
+        "thousand": 1e3,
+        "million": 1e6,
+        "billion": 1e9,
+        "trillion": 1e12
+    }
+};
+
 var DEFAULTS = {
     currencies: ["USD", "EUR", "JPY", "GBP", "AUD"]
 };
@@ -14,7 +34,8 @@ chrome.runtime.onInstalled.addListener(function (details) {
         });
     });
 });
-// Most traded currencies: https://en.wikipedia.org/wiki/Template:Most_traded_currencies
+// Currencies are ordered by their daily share value, if there is one.
+// Source: https://en.wikipedia.org/wiki/Template:Most_traded_currencies
 
 var CURRENCIES = {
   "AUD": { // https://en.wikipedia.org/wiki/Australian_dollar
@@ -95,8 +116,10 @@ var CURRENCIES = {
       "czech",
       "koruna",
       "česká",
+      "ceska",
       "koruny",
-      "české"
+      "české",
+      "ceske"
     ]
   },
   "DKK": { // https://en.wikipedia.org/wiki/Danish_krone
@@ -286,7 +309,7 @@ var CURRENCIES = {
   "PLN": { // https://en.wikipedia.org/wiki/Polish_z%C5%82oty
     "name": "Polish Zloty",
     "share": null,
-    "symbols": ["zł"],
+    "symbols": ["zł", "zl"],
     "format": "%dzł",
     "words": [
       "polish",
@@ -372,7 +395,7 @@ var CURRENCIES = {
   "USD": { // https://en.wikipedia.org/wiki/United_States_dollar
     "name": "US Dollar",
     "share": 80.6,
-    "symbols": ["$"],
+    "symbols": ["$", "US"],
     "format": "$%d %s",
     "words": [
       "united",
@@ -407,13 +430,17 @@ function detectData(target) {
         value = null;
 
     for (var i = 0; i < texts.length; i++) {
-        if (typeof texts[i] == "string") {
-            if (typeof currency != "string") {
-                currency = detectCurrency(texts[i]);
-            }
+        if (typeof texts[i] == "string" && typeof value != "number") {
+            value = detectNumber(texts[i]);
+        }
+    }
 
-            if (typeof value != "number") {
-                value = detectNumber(texts[i]);
+    // Detecting currencies is costly, so it's best to search only if a number
+    // is found.
+    if (typeof value == "number") {
+        for (var i = 0; i < texts.length; i++) {
+            if (typeof texts[i] == "string" && typeof currency != "string") {
+                currency = detectCurrency(texts[i]);
             }
         }
     }
@@ -425,16 +452,29 @@ function detectData(target) {
 }
 
 function detectNumber(text) {
-    var value = text.match(/\d[\d\., ]*k?/ig);
+    var regex = /([\d\., ]*\d)([a-z]?)/ig
+    ,   match = regex.exec(text);
 
-    if (value && value.length === 1) {
-        var number = parseFloat(value[0].replace(/[^\d\.]/g, ''));
+    if (match && match.length) {
+        var number = match[1],
+            modifier = match[2],
+            value = parseFloat(number.replace(/[^\d\.]/g, ''));
 
-        if (value[0].match(/k/i)) {
-            number *= 1000;
+        if (modifier) {
+            for (var k in CONFIG.modifierCharacters) {
+                if (modifier.match(new RegExp(k, "i"))) {
+                    value *= CONFIG.modifierCharacters[k];
+                }
+            }
+        } else {
+            for (var k in CONFIG.modifierWords) {
+                if (text.match(new RegExp(k, "i"))) {
+                    value *= CONFIG.modifierWords[k];
+                }
+            }
         }
 
-        return number;
+        return value;
     }
 
     return null;
@@ -527,7 +567,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.getRates) {
         currencyAPICall(request.currency, function (rates) {
-            sendResponse({list: getRatesList(request.value, rates)});
+            getRatesList(request.value, rates, function (list) {
+                sendResponse({list: list});
+            });
         }, function (error) {
             sendResponse(error);
         });
@@ -536,23 +578,27 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 });
 
-function getRatesList(value, rates) {
-    var list = [];
+function getRatesList(value, rates, callback) {
+    chrome.storage.local.get("currencies", function (data) {
+        var list = [];
 
-    for (var k in rates) {
-        list.push({
-            currency: k,
-            name: CURRENCIES[k].name,
-            value: formatCurrencyValue(k, beautifyValue(value * rates[k], 3), false),
-            rate: beautifyValue(rates[k], 5)
+        data.currencies.forEach(function (currency) {
+            if (CURRENCIES[currency] && rates[currency]) {
+                list.push({
+                    currency: currency,
+                    name: CURRENCIES[currency].name,
+                    value: formatCurrencyValue(currency, beautifyValue(value * rates[currency], 3), false),
+                    rate: beautifyValue(rates[currency], 5)
+                });
+            }
         });
-    }
 
-    return list;
+        callback(list);
+    });
 }
 
 function currencyAPICall(currency, onComplete, onError) {
-    var url = "https://api.fixer.io/latest?base=" + currency,
+    var url = CONFIG.getAPIURL(currency),
         req = new XMLHttpRequest();
 
     req.addEventListener("readystatechange", function () {

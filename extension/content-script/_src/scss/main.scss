@@ -88,7 +88,6 @@ $spinner-image: $EXTENSION_URL + 'img/spinner.png';
 
     .conveuro-list {
         position: relative;
-        overflow: auto;
 
         div {
             &.is-hidden {

@@ -1,4 +1,5 @@
-// Most traded currencies: https://en.wikipedia.org/wiki/Template:Most_traded_currencies
+// Currencies are ordered by their daily share value, if there is one.
+// Source: https://en.wikipedia.org/wiki/Template:Most_traded_currencies
 
 var CURRENCIES = {
   "AUD": { // https://en.wikipedia.org/wiki/Australian_dollar
@@ -79,8 +80,10 @@ var CURRENCIES = {
       "czech",
       "koruna",
       "česká",
+      "ceska",
       "koruny",
-      "české"
+      "české",
+      "ceske"
     ]
   },
   "DKK": { // https://en.wikipedia.org/wiki/Danish_krone
@@ -270,7 +273,7 @@ var CURRENCIES = {
   "PLN": { // https://en.wikipedia.org/wiki/Polish_z%C5%82oty
     "name": "Polish Zloty",
     "share": null,
-    "symbols": ["zł"],
+    "symbols": ["zł", "zl"],
     "format": "%dzł",
     "words": [
       "polish",
@@ -356,7 +359,7 @@ var CURRENCIES = {
   "USD": { // https://en.wikipedia.org/wiki/United_States_dollar
     "name": "US Dollar",
     "share": 80.6,
-    "symbols": ["$"],
+    "symbols": ["$", "US"],
     "format": "$%d %s",
     "words": [
       "united",

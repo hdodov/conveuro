@@ -63,12 +63,14 @@ function createDropdown(position, data) {
         currency: data.currency,
         value: data.value
     }, function (data) {
-        dropdown.setLoaded(true);
+        if (!dropdown.destroyed) {
+            dropdown.setLoaded(true);
 
-        if (data.list) {
-            dropdown.renderList(data.list);
-        } else {
-            dropdown.renderError(data);
+            if (data.list) {
+                dropdown.renderList(data.list);
+            } else {
+                dropdown.renderError(data);
+            }
         }
     });
 

@@ -52,8 +52,7 @@
     background-color: #f2f2f2;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
   .conveuro-dropdown .conveuro-list {
-    position: relative;
-    overflow: auto; }
+    position: relative; }
     .conveuro-dropdown .conveuro-list div.is-hidden {
       display: none; }
     .conveuro-dropdown .conveuro-list div p {

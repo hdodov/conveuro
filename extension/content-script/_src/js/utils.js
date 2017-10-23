@@ -10,6 +10,9 @@ function elementIsInDropdown(elem) {
             count++;
         }
 
+        // The Conveuro dropdown has a maximum depth of elements. If it's
+        // exceeded, don't look deeper because the element is obviously not in
+        // a dropdown.
         if (count >= CONFIG.dropdown.maxDepth) {
             break;
         }
