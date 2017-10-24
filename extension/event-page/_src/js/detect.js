@@ -78,7 +78,10 @@ function detectCurrency(text) {
         var matched = 0;
 
         currency.symbols.forEach(function (symbol) {
-            if (text.indexOf(symbol) !== -1) {
+            if (
+                (typeof symbol == "string" && text.indexOf(symbol) !== -1) ||
+                (typeof symbol == "object" && symbol instanceof RegExp && text.match(symbol))
+            ) {
                 matched++;
             }
         });

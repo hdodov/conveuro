@@ -15,7 +15,7 @@ var CURRENCIES = {
   "BGN": { // https://en.wikipedia.org/wiki/Bulgarian_lev
     "name": "Bulgarian Lev",
     "share": null,
-    "symbols": ["лв", "lv"],
+    "symbols": [/lv\b/i, "лв"],
     "format": "%dлв",
     "words": [
       "bulgarian",
@@ -61,7 +61,7 @@ var CURRENCIES = {
     "name": "Chinese Yuan",
     "share": 4.0,
     "symbols": ["¥", "元", "RMB"],
-    "format": "¥ %d",
+    "format": "¥ %d %s",
     "words": [
       "chinese",
       "yuan",
@@ -74,7 +74,7 @@ var CURRENCIES = {
   "CZK": { // https://en.wikipedia.org/wiki/Czech_koruna
     "name": "Czech Koruna",
     "share": null,
-    "symbols": ["Kč"],
+    "symbols": [/Kč/i],
     "format": "%d Kč",
     "words": [
       "czech",
@@ -89,8 +89,8 @@ var CURRENCIES = {
   "DKK": { // https://en.wikipedia.org/wiki/Danish_krone
     "name": "Danish Krone",
     "share": null,
-    "symbols": ["kr", "kr."],
-    "format": "%d kroner",
+    "symbols": [/kr\b/i],
+    "format": "%s %d kroner",
     "words": [
       "danish",
       "krone",
@@ -135,7 +135,7 @@ var CURRENCIES = {
   "HRK": { // https://en.wikipedia.org/wiki/Croatian_kuna
     "name": "Croatian Kuna",
     "share": null,
-    "symbols": ["kn"],
+    "symbols": [/kn\b/i],
     "format": "%d kn",
     "words": [
       "croatian",
@@ -146,7 +146,7 @@ var CURRENCIES = {
   "HUF": { // https://en.wikipedia.org/wiki/Hungarian_forint
     "name": "Hungarian Forint",
     "share": null,
-    "symbols": ["Ft"],
+    "symbols": [/Ft\b/],
     "format": "%d Ft",
     "words": [
       "hungarian",
@@ -238,8 +238,8 @@ var CURRENCIES = {
   "NOK": { // https://en.wikipedia.org/wiki/Norwegian_krone
     "name": "Norwegian Krone",
     "share": 1.7,
-    "symbols": ["kr"],
-    "format": "%d kr",
+    "symbols": [/kr\b/i],
+    "format": "%s %d kr",
     "words": [
       "norwegian",
       "krone"
@@ -273,7 +273,7 @@ var CURRENCIES = {
   "PLN": { // https://en.wikipedia.org/wiki/Polish_z%C5%82oty
     "name": "Polish Zloty",
     "share": null,
-    "symbols": ["zł", "zl"],
+    "symbols": ["zł", /zl\b/i],
     "format": "%dzł",
     "words": [
       "polish",
@@ -284,7 +284,7 @@ var CURRENCIES = {
   "RON": { // https://en.wikipedia.org/wiki/Romanian_leu
     "name": "Romanian Leu",
     "share": null,
-    "symbols": ["leu"],
+    "symbols": [/leu\b/i],
     "format": "%d lei",
     "words": [
       "romanian",
@@ -307,8 +307,8 @@ var CURRENCIES = {
   "SEK": { // https://en.wikipedia.org/wiki/Swedish_krona
     "name": "Swedish Krona",
     "share": 2.2,
-    "symbols": ["kr"],
-    "format": "%d kr",
+    "symbols": [/kr\b/i],
+    "format": "%s %d kr",
     "words": [
       "swedish",
       "krona",
@@ -373,7 +373,7 @@ var CURRENCIES = {
   "ZAR": { // https://en.wikipedia.org/wiki/South_African_rand
     "name": "South African Rand",
     "share": 1.0,
-    "symbols": ["R "],
+    "symbols": [/R\b/],
     "format": "R %d",
     "words": [
       "south",

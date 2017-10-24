@@ -73,6 +73,8 @@
             }
         });
     });
+
+    _$input.focus();
 })();
 (function () {
     var _$input = $(".input-currencies")

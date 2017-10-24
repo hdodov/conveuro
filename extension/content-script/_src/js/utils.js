@@ -42,15 +42,42 @@ function getContainerText(container) {
 }
 
 function getSelectedText(range) {
-    if (
-        range.startContainer === range.endContainer &&
-        range.startContainer.nodeType === Node.TEXT_NODE
-    ) {
-        var start = range.startOffset,
-            length = range.endOffset - start;
+    var nodes = []
+    ,   selectionStarted = false
+    ,   containerText = ""
+    ,   text = "";
 
-        return range.startContainer.wholeText.substr(start, length);
-    } else {
-        return null;
+    if (range.startContainer === range.endContainer) {
+        nodes = [range.commonAncestorContainer];
+    } else if (range.startContainer.parentElement === range.commonAncestorContainer) {
+        nodes = range.commonAncestorContainer.childNodes;
     }
+
+    for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i] === range.startContainer) {
+            selectionStarted = true;
+        }
+
+        if (selectionStarted) {
+            containerText = getContainerText(nodes[i]);
+
+            if (nodes[i].nodeType === Node.TEXT_NODE) {
+                if (nodes[i] === range.endContainer) {
+                    containerText = containerText.substr(0, range.endOffset);
+                }
+
+                if (nodes[i] === range.startContainer) {
+                    containerText = containerText.substr(range.startOffset);
+                }
+            }
+
+            text += containerText;
+        }
+
+        if (nodes[i] === range.endContainer) {
+            break;
+        }
+    }
+
+    return text;
 }

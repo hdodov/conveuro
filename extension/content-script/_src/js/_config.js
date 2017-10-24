@@ -1,5 +1,5 @@
 var CONFIG = {
-    maxTextLength: 300,
+    maxTextLength: 140,
     dropdown: {
         class: "conveuro-dropdown",
         maxDepth: 4,

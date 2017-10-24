@@ -81,8 +81,8 @@ function createDropdown(position, data) {
 
 function getRangeTextData(range) {
     var data = {
-        commonAncestorText: getWorthyText(getContainerText(range.commonAncestorContainer)),
-        selectedText: getWorthyText(getSelectedText(range)),
+        commonAncestorText: getContainerText(range.commonAncestorContainer),
+        selectedText: getSelectedText(range),
         startContainerText: null,
         endContainerText: null
     };
@@ -90,8 +90,8 @@ function getRangeTextData(range) {
     // If start and end container are the same, their text would already be
     // inside `commonAncestorText`.
     if (range.startContainer !== range.endContainer) {
-        data.startContainerText = getWorthyText(getContainerText(range.startContainer));
-        data.endContainerText = getWorthyText(getContainerText(range.endContainer));
+        data.startContainerText = getContainerText(range.startContainer);
+        data.endContainerText = getContainerText(range.endContainer);
     }
 
     if (
@@ -109,6 +109,10 @@ function getRangeTextData(range) {
         range.endContainer.nodeType == Node.TEXT_NODE
     ) {
         data.endContainerText = data.endContainerText.substr(0, range.endOffset);
+    }
+
+    for (var k in data) {
+        data[k] = getWorthyText(data[k]);
     }
 
     return data;

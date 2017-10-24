@@ -2,7 +2,7 @@
 "use strict";
 
 var CONFIG = {
-    maxTextLength: 300,
+    maxTextLength: 140,
     dropdown: {
         class: "conveuro-dropdown",
         maxDepth: 4,
@@ -397,8 +397,8 @@ function createDropdown(position, data) {
 
 function getRangeTextData(range) {
     var data = {
-        commonAncestorText: getWorthyText(getContainerText(range.commonAncestorContainer)),
-        selectedText: getWorthyText(getSelectedText(range)),
+        commonAncestorText: getContainerText(range.commonAncestorContainer),
+        selectedText: getSelectedText(range),
         startContainerText: null,
         endContainerText: null
     };
@@ -406,8 +406,8 @@ function getRangeTextData(range) {
     // If start and end container are the same, their text would already be
     // inside `commonAncestorText`.
     if (range.startContainer !== range.endContainer) {
-        data.startContainerText = getWorthyText(getContainerText(range.startContainer));
-        data.endContainerText = getWorthyText(getContainerText(range.endContainer));
+        data.startContainerText = getContainerText(range.startContainer);
+        data.endContainerText = getContainerText(range.endContainer);
     }
 
     if (
@@ -425,6 +425,10 @@ function getRangeTextData(range) {
         range.endContainer.nodeType == Node.TEXT_NODE
     ) {
         data.endContainerText = data.endContainerText.substr(0, range.endOffset);
+    }
+
+    for (var k in data) {
+        data[k] = getWorthyText(data[k]);
     }
 
     return data;
@@ -484,16 +488,43 @@ function getContainerText(container) {
 }
 
 function getSelectedText(range) {
-    if (
-        range.startContainer === range.endContainer &&
-        range.startContainer.nodeType === Node.TEXT_NODE
-    ) {
-        var start = range.startOffset,
-            length = range.endOffset - start;
+    var nodes = []
+    ,   selectionStarted = false
+    ,   containerText = ""
+    ,   text = "";
 
-        return range.startContainer.wholeText.substr(start, length);
-    } else {
-        return null;
+    if (range.startContainer === range.endContainer) {
+        nodes = [range.commonAncestorContainer];
+    } else if (range.startContainer.parentElement === range.commonAncestorContainer) {
+        nodes = range.commonAncestorContainer.childNodes;
     }
+
+    for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i] === range.startContainer) {
+            selectionStarted = true;
+        }
+
+        if (selectionStarted) {
+            containerText = getContainerText(nodes[i]);
+
+            if (nodes[i].nodeType === Node.TEXT_NODE) {
+                if (nodes[i] === range.endContainer) {
+                    containerText = containerText.substr(0, range.endOffset);
+                }
+
+                if (nodes[i] === range.startContainer) {
+                    containerText = containerText.substr(range.startOffset);
+                }
+            }
+
+            text += containerText;
+        }
+
+        if (nodes[i] === range.endContainer) {
+            break;
+        }
+    }
+
+    return text;
 }
 }());
