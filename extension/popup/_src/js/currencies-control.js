@@ -3,7 +3,7 @@
     ,   _instance = null;
 
     _$input.selectize({
-        persist: false,
+        persist: true,
         highlight: true,
 
         labelField: ["code"],
