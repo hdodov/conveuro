@@ -33,7 +33,7 @@ function sourceTaskJs(name, dir) {
             .pipe(iife({
                 useStrict: true
             }))
-            //.pipe(uglify())
+            .pipe(uglify())
             .pipe(gulp.dest(dir + 'js/'));
     });
 }
