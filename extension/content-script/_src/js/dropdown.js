@@ -41,21 +41,28 @@ function Dropdown(container) {
     requestData: function (data) {
         this.setLoading(true);
         this.setTitle(data.title);
-        this.renderList(data.list);
 
         var timestamp = Date.now();
         this.requestTimestamp = timestamp;
 
-        chrome.runtime.sendMessage({
-            id: "fill_list",
-            list: data.list,
-            base: data.currency,
-            value: data.value
-        }, function (response) {
-            if (this.requestTimestamp === timestamp && !this.destroyed) {
-                this.handleData(response);
-            }
-        }.bind(this));
+        if (data.list && data.list.length) {
+            this.renderList(data.list);
+
+            chrome.runtime.sendMessage({
+                id: "fill_list",
+                list: data.list,
+                base: data.currency,
+                value: data.value
+            }, function (response) {
+                if (this.requestTimestamp === timestamp && !this.destroyed) {
+                    this.handleData(response);
+                }
+            }.bind(this));
+        } else {
+            this.renderError({
+                error: "No currencies to convert."
+            });
+        }
     },
 
     handleData: function (response) {
@@ -81,9 +88,9 @@ function Dropdown(container) {
     createListItem: function (data) {
         var item = document.createElement("div")
         ,   name = data.name    || ""
-        ,   value = data.value  || "----------"
-        ,   rate = data.rate    || "-------"
-        ,   code = data.code    || "----";
+        ,   value = data.value  || "-------"
+        ,   rate = data.rate    || "----"
+        ,   code = data.code    || "---";
 
         item.innerHTML = ''
         +   '<p>' + value + '</p>'

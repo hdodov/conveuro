@@ -2,7 +2,6 @@
     var _$input = $(".input-convertor")
     ,   _$container = $(".converted-container")
     ,   _dropdown = null
-    ,   _lastRequestTimestamp = null
     ,   _shownConversion = null;
 
     function newDropdown() {

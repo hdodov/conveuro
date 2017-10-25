@@ -43,14 +43,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.id !== "fill_list") return;
 
-    if (!request.list || !request.list.length) {
-        sendResponse({
-            error: "No currencies to convert."
-        });
-
-        return false;
-    }
-
     currencyAPICall(request.base, function (rates) {
         request.list.forEach(function (item) {
             var itemRate = rates[item.code];
@@ -64,8 +56,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         sendResponse({
             list: request.list
         });
-    }, function (error) {
-        sendResponse(error);
+    }, function (error, code) {
+        sendResponse({
+            error: error,
+            code: code
+        });
     });
 
     return true;
@@ -83,19 +78,16 @@ function currencyAPICall(currency, onComplete, onError) {
                 try {
                     data = JSON.parse(this.responseText);
                 } catch (e) {
-                    onError({
-                        error: "Couldn't parse response data."
-                    });
+                    onError("Couldn't parse response data.");
                 }
 
                 if (data && data.rates) {
                     onComplete(data.rates);
+                } else {
+                    onError("No rates data found in response.");
                 }
             } else {
-                onError({
-                    error: this.statusText,
-                    code: this.status
-                });
+                onError(this.statusText, this.status);
             }
         } 
     });

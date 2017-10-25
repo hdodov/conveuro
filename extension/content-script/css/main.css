@@ -33,10 +33,12 @@
     visibility: hidden;
     transform: scale(0.92);
     opacity: 0; }
+  .conveuro-dropdown.is-loading .conveuro-list * {
+    font-family: monospace; }
   .conveuro-dropdown.is-loading .conveuro-list:before, .conveuro-dropdown.is-loading .conveuro-list:after {
     visibility: visible; }
   .conveuro-dropdown.is-loading .conveuro-list:before {
-    opacity: 0.75; }
+    opacity: 0.85; }
   .conveuro-dropdown.is-loading .conveuro-list:after {
     opacity: 1; }
   .conveuro-dropdown p, .conveuro-dropdown small {
@@ -79,10 +81,10 @@
       top: 50%;
       left: 50%;
       z-index: 11;
-      width: 1.4em;
-      height: 1.4em;
-      margin-left: -0.7em;
-      margin-top: -0.7em;
+      width: 18px;
+      height: 18px;
+      margin-left: -9px;
+      margin-top: -9px;
       background-image: url("chrome-extension://hchlbehbbfdiogoeigibfgjpcmhogaop/img/spinner.png");
       background-size: contain;
       background-position: center;

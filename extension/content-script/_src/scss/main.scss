@@ -9,7 +9,7 @@ $list-item-border: 1px solid rgba(0, 0, 0, 0.1);
 $list-border: 1px solid rgba(0, 0, 0, 0.1);
 $color-bg: #f2f2f2;
 
-$spinner-diameter: 1.4em;
+$spinner-diameter: 18px;
 $spinner-image: $EXTENSION_URL + 'img/spinner.png';
 @keyframes conveuro-spinner-animation {
     0%   { transform: rotate(0); }
@@ -56,12 +56,16 @@ $spinner-image: $EXTENSION_URL + 'img/spinner.png';
     }
 
     &.is-loading .conveuro-list {
+        * {
+            font-family: monospace;
+        }
+
         &:before, &:after {
             visibility: visible;
         }
 
         &:before {
-            opacity: 0.75;
+            opacity: 0.85;
         }
 
         &:after {
