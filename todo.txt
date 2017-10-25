@@ -1,2 +1,0 @@
-- Remove country name keywords "bulgarian", "indian"... where possible
-- Loading overlay is broken when "see more" is clicked while waiting for response

@@ -104,7 +104,12 @@ function Dropdown(container) {
 
             if (i >= 3) {
                 item.classList.add("is-hidden");
-                this.btnMore.classList.remove("is-hidden");
+
+                if (!this.loading) {
+                    // If the dropdown is loading, there isn't any meaningful
+                    // data to show.
+                    this.btnMore.classList.remove("is-hidden");
+                }
             }
         }.bind(this));
     },

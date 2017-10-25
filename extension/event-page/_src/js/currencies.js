@@ -20,7 +20,7 @@ var CURRENCIES = {
     "words": [
       "bulgarian",
       "lev",
-      "българ",
+      "български",
       "лев"
     ]
   },
