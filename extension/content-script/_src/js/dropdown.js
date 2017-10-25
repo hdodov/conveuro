@@ -1,6 +1,6 @@
 function Dropdown(container) {
     this.container = container || document.body;
-    this.loaded = false;
+    this.loading = false;
     this.destroyed = false;
     this.onDestroy = null;
 
@@ -100,16 +100,10 @@ function Dropdown(container) {
         this.title.innerHTML = value;
     },
 
-    setLoaded: function (value) {
-        this.loaded = value;
-
-        if (value === true) {
-            this.setLoading(false);
-        }
-    },
-
     setLoading: function (value) {
-        if (value === true && !this.loaded) {
+        this.loading = value;
+
+        if (this.loading === true) {
             this.elem.classList.add("is-loading");
         } else {
             this.elem.classList.remove("is-loading");

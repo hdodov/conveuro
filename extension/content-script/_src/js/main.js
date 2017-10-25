@@ -64,7 +64,7 @@ function createDropdown(position, data) {
         value: data.value
     }, function (data) {
         if (!dropdown.destroyed) {
-            dropdown.setLoaded(true);
+            dropdown.setLoading(false);
 
             if (data.list) {
                 dropdown.renderList(data.list);

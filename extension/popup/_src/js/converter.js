@@ -43,7 +43,7 @@
                 return;
             }
 
-            _dropdown.setLoaded(true);
+            _dropdown.setLoading(false);
 
             if (response.list) {
                 _dropdown.renderList(response.list);
