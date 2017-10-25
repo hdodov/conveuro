@@ -80,9 +80,18 @@ function Dropdown(container) {
         this.elem.style.top = y + "px";
     },
 
-    emptyContent: function () {
-        this.list.innerHTML = "";
-        this.errorContainer.innerHTML = "";
+    setTitle: function (value) {
+        this.title.innerHTML = value;
+    },
+
+    setLoading: function (value) {
+        this.loading = value;
+
+        if (this.loading === true) {
+            this.elem.classList.add("is-loading");
+        } else {
+            this.elem.classList.remove("is-loading");
+        }
     },
 
     createListItem: function (data) {
@@ -103,7 +112,7 @@ function Dropdown(container) {
 
     renderList: function (list) {
         this.emptyContent();
-        this.btnMore.classList.add("is-hidden");
+        
 
         list.forEach(function (data, i) {
             var item = this.createListItem(data);
@@ -130,20 +139,6 @@ function Dropdown(container) {
 
         if (data.error) {
             this.errorContainer.innerHTML += '<p class="message">' + data.error + '</p>';
-        }
-    },
-
-    setTitle: function (value) {
-        this.title.innerHTML = value;
-    },
-
-    setLoading: function (value) {
-        this.loading = value;
-
-        if (this.loading === true) {
-            this.elem.classList.add("is-loading");
-        } else {
-            this.elem.classList.remove("is-loading");
         }
     },
 
@@ -174,6 +169,12 @@ function Dropdown(container) {
         setTimeout(function () {
             this.destroy();
         }.bind(this), 500);
+    },
+
+    emptyContent: function () {
+        this.list.innerHTML = "";
+        this.errorContainer.innerHTML = "";
+        this.btnMore.classList.add("is-hidden");
     },
 
     destroy: function () {
