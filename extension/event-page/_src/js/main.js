@@ -1,63 +1,75 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.getCurrencies) {
+    if (request.id === "get_currencies") {
         sendResponse(CURRENCIES);
     }
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.getWorthy && request.data) {
-        var detected = detectData(request.data);
+    if (request.id !== "detect_data") return;
 
-        if (
-            typeof detected.currency == "string" &&
-            typeof detected.value == "number" &&
-            parseInt(detected.value) != 0
-        ) {
+    var detected = detectData(request.data);
+
+    if (
+        typeof detected.currency == "string" &&
+        typeof detected.value == "number" &&
+        detected.value !== 0
+    ) {
+        chrome.storage.local.get("currencies", function (data) {
+            var list = [];
+
+            data.currencies.forEach(function (code) {
+                if (CURRENCIES[code] && code !== detected.currency) {
+                    list.push({
+                        code: code,
+                        name: CURRENCIES[code].name
+                    });
+                }
+            });
+
             sendResponse({
                 title: formatCurrencyValue(detected.currency, beautifyValue(detected.value, 3)),
+                value: detected.value,
                 currency: detected.currency,
-                value: detected.value
+                list: list
             });
-        } else {
-            sendResponse(false);
-        }
+        });
 
         return true;
+    } else {
+        sendResponse(false);
     }
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.getRates) {
-        currencyAPICall(request.currency, function (rates) {
-            getRatesList(request.value, rates, function (list) {
-                sendResponse({list: list});
-            });
-        }, function (error) {
-            sendResponse(error);
+    if (request.id !== "fill_list") return;
+
+    if (!request.list || !request.list.length) {
+        sendResponse({
+            error: "No currencies to convert."
         });
 
-        return true;
+        return false;
     }
-});
 
-function getRatesList(value, rates, callback) {
-    chrome.storage.local.get("currencies", function (data) {
-        var list = [];
+    currencyAPICall(request.base, function (rates) {
+        request.list.forEach(function (item) {
+            var itemRate = rates[item.code];
 
-        data.currencies.forEach(function (currency) {
-            if (CURRENCIES[currency] && rates[currency]) {
-                list.push({
-                    currency: currency,
-                    name: CURRENCIES[currency].name,
-                    value: formatCurrencyValue(currency, beautifyValue(value * rates[currency], 3), false),
-                    rate: beautifyValue(rates[currency], 5)
-                });
+            if (itemRate) {
+                item.value = formatCurrencyValue(item.code, beautifyValue(request.value * itemRate, 3), false);
+                item.rate = beautifyValue(itemRate, 5)
             }
         });
 
-        callback(list);
+        sendResponse({
+            list: request.list
+        });
+    }, function (error) {
+        sendResponse(error);
     });
-}
+
+    return true;
+});
 
 function currencyAPICall(currency, onComplete, onError) {
     var url = CONFIG.getAPIURL(currency),
@@ -72,7 +84,7 @@ function currencyAPICall(currency, onComplete, onError) {
                     data = JSON.parse(this.responseText);
                 } catch (e) {
                     onError({
-                        message: "Couldn't parse response data."
+                        error: "Couldn't parse response data."
                     });
                 }
 
@@ -81,7 +93,7 @@ function currencyAPICall(currency, onComplete, onError) {
                 }
             } else {
                 onError({
-                    message: this.statusText,
+                    error: this.statusText,
                     code: this.status
                 });
             }

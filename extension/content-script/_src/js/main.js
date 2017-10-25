@@ -21,7 +21,7 @@ document.addEventListener("mouseup", function (event) {
 
     if (shouldRequest) {
         chrome.runtime.sendMessage({
-            getWorthy: true,
+            id: "detect_data",
             data: rangeData
         }, function (data) {
             if (data && !DropdownManager.exists(data.title)) {
@@ -33,9 +33,6 @@ document.addEventListener("mouseup", function (event) {
 
 function createDropdown(position, data) {
     var dropdown = new Dropdown();
-    dropdown.renderPlaceholderList(3);
-    dropdown.setTitle(data.title);
-    dropdown.setLoading(true);
     dropdown.setPosition(
         position[0] - (dropdown.elem.offsetWidth / 2),
         position[1] + 24
@@ -58,22 +55,7 @@ function createDropdown(position, data) {
         dragger.destroy();
     };
 
-    chrome.runtime.sendMessage({
-        getRates: true,
-        currency: data.currency,
-        value: data.value
-    }, function (data) {
-        if (!dropdown.destroyed) {
-            dropdown.setLoading(false);
-
-            if (data.list) {
-                dropdown.renderList(data.list);
-            } else {
-                dropdown.renderError(data);
-            }
-        }
-    });
-
+    dropdown.requestData(data);
     setTimeout(function () {
         dropdown.show();
     }, 150);

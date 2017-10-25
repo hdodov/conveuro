@@ -1,1 +1,2 @@
-- Add less than 3 placeholder items if selected currencies are less
+- Remove country name keywords "bulgarian", "indian"... where possible
+- Loading overlay is broken when "see more" is clicked while waiting for response

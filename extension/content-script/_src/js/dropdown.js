@@ -2,6 +2,7 @@ function Dropdown(container) {
     this.container = container || document.body;
     this.loading = false;
     this.destroyed = false;
+    this.requestTimestamp = null;
     this.onDestroy = null;
 
     this.elem = document.createElement("div");
@@ -37,24 +38,64 @@ function Dropdown(container) {
         this.close();
     }.bind(this));
 } Dropdown.prototype = {
+    requestData: function (data) {
+        this.setLoading(true);
+        this.setTitle(data.title);
+        this.renderList(data.list);
+
+        var timestamp = Date.now();
+        this.requestTimestamp = timestamp;
+
+        chrome.runtime.sendMessage({
+            id: "fill_list",
+            list: data.list,
+            base: data.currency,
+            value: data.value
+        }, function (response) {
+            if (this.requestTimestamp === timestamp && !this.destroyed) {
+                this.handleData(response);
+            }
+        }.bind(this));
+    },
+
+    handleData: function (response) {
+        this.setLoading(false);
+
+        if (response.list) {
+            this.renderList(response.list);
+        } else {
+            this.renderError(response);
+        }
+    },
+
     setPosition: function (x, y) {
         this.elem.style.left = x + "px";
         this.elem.style.top = y + "px";
     },
 
+    emptyContent: function () {
+        this.list.innerHTML = "";
+        this.errorContainer.innerHTML = "";
+    },
+
     createListItem: function (data) {
-        var item = document.createElement("div");
+        var item = document.createElement("div")
+        ,   name = data.name    || ""
+        ,   value = data.value  || "----------"
+        ,   rate = data.rate    || "-------"
+        ,   code = data.code    || "----";
+
         item.innerHTML = ''
-        +   '<p>' + data.value + '</p>'
-        +   '<small title="' + data.name + '">'
-        +       data.rate + ' ' + data.currency
+        +   '<p>' + value + '</p>'
+        +   '<small title="' + name + '">'
+        +       rate + ' ' + code
         +   '</small>';
 
         return item;
     },
 
     renderList: function (list) {
-        this.list.innerHTML = "";
+        this.emptyContent();
         this.btnMore.classList.add("is-hidden");
 
         list.forEach(function (data, i) {
@@ -68,31 +109,15 @@ function Dropdown(container) {
         }.bind(this));
     },
 
-    renderPlaceholderList: function (itemsCount) {
-        var data = {
-            value:      "----------",
-            rate:       "-------",
-            currency:   "----"
-        };
+    renderError: function (data) {
+        this.emptyContent();
 
-        this.list.innerHTML = "";
-        this.btnMore.classList.add("is-hidden");
-
-        for (var i = 0; i < itemsCount; i++) {
-            this.list.appendChild(this.createListItem(data));
-        }
-    },
-
-    renderError: function (error) {
-        this.renderList([]);
-        this.errorContainer.innerHTML = '';
-
-        if (error.code) {
-            this.errorContainer.innerHTML += '<p class="code">' + error.code + '</p>';
+        if (data.code) {
+            this.errorContainer.innerHTML += '<p class="code">' + data.code + '</p>';
         }
 
-        if (error.message) {
-            this.errorContainer.innerHTML += '<p class="message">' + error.message + '</p>';
+        if (data.error) {
+            this.errorContainer.innerHTML += '<p class="message">' + data.error + '</p>';
         }
     },
 

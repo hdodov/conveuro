@@ -33,7 +33,7 @@
 
     _instance = _$input[0].selectize;
 
-    chrome.runtime.sendMessage({getCurrencies: true}, function (data) {
+    chrome.runtime.sendMessage({id: "get_currencies"}, function (data) {
         var options = [];
 
         for (var k in data) {
