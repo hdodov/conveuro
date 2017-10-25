@@ -48,6 +48,45 @@ function obj_merge() {
     return result;
 }
 
+function parseNumber(string) {
+    var result = ""
+    ,   separators = []
+    ,   separatorRegex = /\D+/ig
+    ,   separatorMatch = null
+    ,   numberParts = string.replace(separatorRegex, "-").split("-");
+
+    while (1) {
+        separatorMatch = separatorRegex.exec(string);
+        if (separatorMatch) {
+            separators.push(separatorMatch[0]);
+        } else {
+            break;
+        }
+    }
+
+    for (var i = 0; i < numberParts.length; i++) {
+        if (
+            i === (numberParts.length - 1) && // when last part
+            i > 0 && // there's a part before the last one
+            (
+                // If the part contains any number of digits other than 3,
+                // it's probably a decimal point.
+                numberParts[i].length !== 3 ||
+
+                // If it does have 3 digits, it's probably not a decimal
+                // point, unless the preceding separator states that.
+                separators[i - 1] === "."
+            )
+        ) {
+            result += ".";
+        }
+
+        result += numberParts[i];
+    }
+
+    return parseFloat(result);
+}
+
 function beautifyValue(value, digits) {
     if (typeof value !== "number") {
         return value;

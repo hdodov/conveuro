@@ -3,19 +3,19 @@ var CONFIG = {
         return "https://api.fixer.io/latest?base=" + currency;
     },
 
-    modifierCharacters: {
-        "k": 1e3,
-        "m": 1e6,
-        "b": 1e9,
-        "t": 1e12
-    },
+    modifierSymbols: [
+        [/k/i, 1e3],
+        [/m/i, 1e6],
+        [/b/i, 1e9],
+        [/t/i, 1e12]
+    ],
 
-    modifierWords: {
-        "thousand": 1e3,
-        "million": 1e6,
-        "billion": 1e9,
-        "trillion": 1e12
-    }
+    modifierWords: [
+        [/thousand/i, 1e3],
+        [/million/i, 1e6],
+        [/billion/i, 1e9],
+        [/trillion/i, 1e12]
+    ]
 };
 
 var DEFAULTS = {

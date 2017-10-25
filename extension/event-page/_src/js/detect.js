@@ -32,32 +32,35 @@ function detectData(target) {
 }
 
 function detectNumber(text) {
-    var regex = /([\d\., ]*\d)([a-z]?)/ig
-    ,   match = regex.exec(text);
+    var regex = /(\d(?:[\.,\s]?\d+)*)(?:([a-z])\b)?/i
+    ,   match = regex.exec(text)
+    ,   number
+    ,   modifier;
 
     if (match && match.length) {
-        var number = match[1],
-            modifier = match[2],
-            value = parseFloat(number.replace(/[^\d\.]/g, ''));
+        number = parseNumber(match[1]);
+        modifier = match[2];
 
         if (modifier) {
-            for (var k in CONFIG.modifierCharacters) {
-                if (modifier.match(new RegExp(k, "i"))) {
-                    value *= CONFIG.modifierCharacters[k];
+            CONFIG.modifierSymbols.forEach(function (symbol) {
+                if (modifier.match(symbol[0])) {
+                    number *= symbol[1];
                 }
-            }
+            });
         } else {
-            for (var k in CONFIG.modifierWords) {
-                if (text.match(new RegExp(k, "i"))) {
-                    value *= CONFIG.modifierWords[k];
+            CONFIG.modifierWords.forEach(function (word) {
+                if (text.match(word[0])) {
+                    number *= word[1];
                 }
-            }
+            });
         }
-
-        return value;
     }
 
-    return null;
+    if (typeof number == "number" && number !== NaN) {
+        return number;
+    } else {
+        return null;
+    }
 }
 
 function detectCurrency(text) {

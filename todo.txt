@@ -1,0 +1,2 @@
+- Add less than 3 placeholder items if selected currencies are less
+- Fix spinner icon when multiple requests are made in popup with one dropdown
