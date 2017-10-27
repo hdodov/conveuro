@@ -1,12 +1,10 @@
 # Conveuro
 
-Chrome Extension that allows you to convert currencies with a simple selection.
+Chrome Extension that allows you to convert currencies with a simple selection. [Get it for FREE!](https://chrome.google.com/webstore/detail/conveuro/hchlbehbbfdiogoeigibfgjpcmhogaop)
 
 # Demo
 ![Dropdown functionality on eBay](https://media.giphy.com/media/3ov9jFk1VmNO9s9pSM/giphy.gif)
 ![Popup functionality](https://media.giphy.com/media/3o7aD2tcKtpAr1DgUU/giphy.gif)
-
-[Get it for FREE!](https://chrome.google.com/webstore/detail/conveuro/hchlbehbbfdiogoeigibfgjpcmhogaop)
 
 # How it works
 
