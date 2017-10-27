@@ -20,14 +20,16 @@ If more than one currency is found, the one with the highest daily share value i
 
 ## Data
 
-Actual conversion data is provided by the European Central Bank through the [](http://fixer.io/) API.
+Actual conversion data is provided by the European Central Bank through the http://fixer.io/ API.
 
 # Contribution
 
 ## Support
 
-The extension can provide data for only 32 currency due to using a free API. You could **[donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QL95RFKLGS236)**  and help with moving to a paid API that has a broader range of currency data.
+The extension can provide data for only 32 currency due to using a free API. You could **[donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QL95RFKLGS236)** 💗 and help with moving to a paid API that has a broader range of currency data.
 
 ## Detection
 
 Most data used for currency detection is manually taken from Wikipedia. Some currencies might not have the correct data set. You could improve the detection accuracy of any currency by changing [this file](https://github.com/hdodov/conveuro/blob/master/extension/event-page/_src/js/currencies.js). 😎
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QL95RFKLGS236)
