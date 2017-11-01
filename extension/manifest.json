@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Conveuro",
-  "version": "1.1.4",
+  "version": "1.1.5",
 
   "author": "Hristiyan Dodov",
   "description": "Instantly convert currencies with a simple text selection.",
@@ -17,6 +17,7 @@
   ],
 
   "web_accessible_resources": [
+    "chrome-extension://hchlbehbbfdiogoeigibfgjpcmhogaop/**/*",
     "content-script/**/*",
     "event-page/**/*",
     "popup/**/*",
