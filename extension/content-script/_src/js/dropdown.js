@@ -112,11 +112,18 @@ function Dropdown(container) {
 
     renderList: function (list) {
         this.emptyContent();
-        
 
         list.forEach(function (data, i) {
             var item = this.createListItem(data);
             this.list.appendChild(item);
+
+            var valueElem = item.querySelector('p')
+            ,   valueOverflows = (valueElem.offsetWidth < valueElem.scrollWidth);
+            
+            if (valueOverflows) {
+                item.classList.add("is-overflowing");
+                item.title = valueElem.innerHTML;
+            }
 
             if (i >= 3) {
                 item.classList.add("is-hidden");

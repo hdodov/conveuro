@@ -17,9 +17,9 @@
   font-family: sans-serif;
   color: #444;
   background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid #ccc;
   box-sizing: border-box;
-  box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.6) 0px 4px 10px -2px;
   border-radius: 4px;
   transition: transform 0.25s ease, margin 0.25s ease, visibility 0.25s ease, opacity 0.25s ease;
   transform: scale(1);
@@ -58,12 +58,16 @@
     .conveuro-dropdown .conveuro-list div.is-hidden {
       display: none; }
     .conveuro-dropdown .conveuro-list div p {
-      margin-right: 1em;
-      font-size: 0.9em; }
+      margin-right: 0.75em;
+      font-size: 0.9em;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden; }
     .conveuro-dropdown .conveuro-list div small {
       font-size: 0.75em;
       font-family: monospace;
-      opacity: 0.5; }
+      opacity: 0.5;
+      white-space: nowrap; }
     .conveuro-dropdown .conveuro-list:before {
       /* overlay */
       content: "";

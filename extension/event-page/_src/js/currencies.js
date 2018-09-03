@@ -471,6 +471,12 @@ var CURRENCIES = {
       "nakfa"
     ]
   },
+
+
+// HERE
+// fix styles of very long numbers
+
+
   "EUR": { // https://en.wikipedia.org/wiki/Euro
     "name": "Euro",
     "share": 37.4,
@@ -731,7 +737,7 @@ var CURRENCIES = {
     ]
   },
   "USD": { // https://en.wikipedia.org/wiki/United_States_dollar
-    "name": "US Dollar",
+    "name": "United States Dollar",
     "share": 80.6,
     "symbols": ["$", "US"],
     "format": "$%d %s",
