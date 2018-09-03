@@ -13,7 +13,7 @@
 
   "permissions": [
     "storage",
-    "https://api.fixer.io/"
+    "http://data.fixer.io/"
   ],
 
   "web_accessible_resources": [

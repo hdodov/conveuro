@@ -1,7 +1,5 @@
 var CONFIG = {
-    getAPIURL: function (currency) {
-        return "https://api.fixer.io/latest?base=" + currency;
-    },
+    apiUrl: "http://data.fixer.io/api/latest?access_key=61bef622cdab2e0f536a8343bd33e43c",
 
     modifierSymbols: [
         [/k/i, 1e3],

@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "Easily convert between currencies with a simple cursor selection.",
   "main": "index.js",
-  "dependencies": {
-    "dragula": "^3.7.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",

@@ -43,57 +43,30 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.id !== "fill_list") return;
 
-    currencyAPICall(request.base, function (rates) {
+    getRates().then(function (data) {
+        var baseRate = data.rates[request.base]
+        ,   baseCoef = 1 / baseRate; // from request rate to base (likely EUR)
+
+        if (typeof baseRate !== 'number') {
+            return sendResponse({
+                error: 'No base rate found'
+            });
+        }
+
         request.list.forEach(function (item) {
-            var itemRate = rates[item.code];
+            var itemRate = data.rates[item.code]
+            ,   trueRate = baseCoef * itemRate;
 
             if (itemRate) {
-                item.value = formatCurrencyValue(item.code, beautifyValue(request.value * itemRate, 3), false);
-                item.rate = beautifyValue(itemRate, 5)
+                item.value = formatCurrencyValue(item.code, beautifyValue(trueRate * request.value, 3), false);
+                item.rate = beautifyValue(trueRate, 5)
             }
         });
 
         sendResponse({
             list: request.list
         });
-    }, function (error, code) {
-        sendResponse({
-            error: error,
-            code: code
-        });
     });
 
     return true;
 });
-
-function currencyAPICall(currency, onComplete, onError) {
-    var url = CONFIG.getAPIURL(currency),
-        req = new XMLHttpRequest();
-
-    req.addEventListener("readystatechange", function () {
-        if (this.readyState === 4) {
-            if (this.status == 200) {
-                var data = null;
-
-                try {
-                    data = JSON.parse(this.responseText);
-                } catch (e) {
-                    onError("Couldn't parse response data.");
-                }
-
-                if (data && data.rates) {
-                    onComplete(data.rates);
-                } else {
-                    onError("No rates data found in response.");
-                }
-            } else {
-                onError(this.statusText, this.status);
-            }
-        } 
-    });
-
-    req.open("GET", url, true);
-    req.send(null);
-
-    return req;
-}
