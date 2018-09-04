@@ -100,6 +100,7 @@ $spinner-image: $EXTENSION_URL + 'img/spinner.png';
 
             p {
                 margin-right: 0.75em;
+                padding: 8px 0;
                 font-size: 0.9em;
 
                 white-space: nowrap;
@@ -110,8 +111,8 @@ $spinner-image: $EXTENSION_URL + 'img/spinner.png';
             small {
                 font-size: 0.75em;
                 font-family: monospace;
-                opacity: 0.5;
                 white-space: nowrap;
+                color: #888888;
             }
         }
 
@@ -161,7 +162,7 @@ $spinner-image: $EXTENSION_URL + 'img/spinner.png';
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0.5em 0.75em;
+        padding: 0.1px 0.75em;
     }
 
     .conveuro-list div + div {

@@ -59,6 +59,7 @@
       display: none; }
     .conveuro-dropdown .conveuro-list div p {
       margin-right: 0.75em;
+      padding: 8px 0;
       font-size: 0.9em;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -66,8 +67,8 @@
     .conveuro-dropdown .conveuro-list div small {
       font-size: 0.75em;
       font-family: monospace;
-      opacity: 0.5;
-      white-space: nowrap; }
+      white-space: nowrap;
+      color: #888888; }
     .conveuro-dropdown .conveuro-list:before {
       /* overlay */
       content: "";
@@ -103,7 +104,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5em 0.75em; }
+    padding: 0.1px 0.75em; }
   .conveuro-dropdown .conveuro-list div + div {
     border-top: 1px solid rgba(0, 0, 0, 0.1); }
   .conveuro-dropdown .conveuro-error {
