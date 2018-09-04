@@ -141,7 +141,7 @@ var CURRENCIES = {
   "BGN": { // https://en.wikipedia.org/wiki/Bulgarian_lev
     "name": "Bulgarian Lev",
     "share": null,
-    "symbols": ["lv.", "лв."],
+    "symbols": ["lv", "лв"],
     "format": "%dлв.",
     "words": [
       "bulgarian",

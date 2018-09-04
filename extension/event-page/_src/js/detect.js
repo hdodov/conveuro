@@ -81,11 +81,18 @@ function detectCurrency(text) {
         var matched = 0;
 
         currency.symbols.forEach(function (symbol) {
-            if (
-                (typeof symbol == "string" && text.indexOf(symbol) !== -1) ||
-                (typeof symbol == "object" && symbol instanceof RegExp && text.match(symbol))
-            ) {
-                matched++;
+            if (typeof symbol == "string" && text.indexOf(symbol) !== -1) {
+                var escapedSymbol = symbol.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+                ,   patternAtStart = new RegExp('(?:\\s|^)' + escapedSymbol + '\\d+')
+                ,   patternAtEnd = new RegExp('\\d+\\s?' + escapedSymbol + '(?:\\s|$)');
+
+                // This is needed for cases where `foo 5 krtest` would match `kr` as the
+                // symbol, even though it's part of a word. The patterns ensure it should
+                // either begin with empty space and the symbol, or the symbol and then empty space.
+
+                if (text.match(patternAtStart) || text.match(patternAtEnd)) {
+                    matched++;
+                }
             }
         });
 
