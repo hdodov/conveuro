@@ -42,6 +42,16 @@ function Dropdown(container) {
         this.setLoading(true);
         this.setTitle(data.title);
 
+        var query = {};
+        query[data.currency] = true;
+
+        chrome.runtime.sendMessage({
+            id: "get_currencies",
+            currencies: query
+        }, function (currencies) {
+            this.title.title = currencies[data.currency].name;
+        }.bind(this));
+
         var timestamp = Date.now();
         this.requestTimestamp = timestamp;
 

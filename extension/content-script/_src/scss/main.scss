@@ -88,6 +88,7 @@ $spinner-image: $EXTENSION_URL + 'img/spinner.png';
         text-align: center;
         background-color: $color-bg;
         border-bottom: $list-border;
+        cursor: default;
     }
 
     .conveuro-list {

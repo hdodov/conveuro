@@ -1,6 +1,13 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.id === "get_currencies") {
-        sendResponse(CURRENCIES);
+        if (request.currencies) {
+            for (var k in request.currencies) {
+                request.currencies[k] = CURRENCIES[k];
+                sendResponse(request.currencies);
+            }
+        } else {
+            sendResponse(CURRENCIES);
+        }
     }
 });
 

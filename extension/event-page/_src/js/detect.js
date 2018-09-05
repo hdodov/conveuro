@@ -103,7 +103,7 @@ function detectCurrency(text) {
         var matched = 0;
 
         currency.words.forEach(function (word) {
-            if (text.match(new RegExp(word, 'i'))) {
+            if (text.match(new RegExp('\\b' + word, 'i'))) {
                 matched++;
             }
         });
