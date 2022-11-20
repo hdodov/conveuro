@@ -20,7 +20,7 @@ If more than one currency is found, the one with the highest daily share value i
 
 ## Data
 
-Actual conversion data is provided by the European Central Bank through the http://fixer.io/ API.
+Actual conversion data is provided by the https://api.exchangerate.host/ API.
 
 # Contribution
 
