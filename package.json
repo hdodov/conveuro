@@ -30,5 +30,8 @@
   "bugs": {
     "url": "https://github.com/hdodov/conveuro/issues"
   },
-  "homepage": "https://github.com/hdodov/conveuro#readme"
+  "homepage": "https://github.com/hdodov/conveuro#readme",
+  "volta": {
+    "node": "6.17.1"
+  }
 }
