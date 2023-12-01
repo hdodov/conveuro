@@ -1,5 +1,5 @@
 var CONFIG = {
-    apiUrl: "https://api.exchangerate.host/latest",
+    apiUrl: "http://data.fixer.io/api/latest?access_key=31ffd3407ce99ecb1463eae999358510",
 
     modifierSymbols: [
         [/k/i, 1e3],

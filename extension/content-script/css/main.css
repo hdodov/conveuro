@@ -21,7 +21,7 @@
   box-sizing: border-box;
   box-shadow: rgba(0, 0, 0, 0.6) 0px 4px 10px -2px;
   border-radius: 4px;
-  transition: transform 0.25s ease, margin 0.25s ease, visibility 0.25s ease, opacity 0.25s ease;
+  transition: transform 0.25s ease, margin 0.25s ease, visibility 0.25s ease, opacity 0.25s ease;
   transform: scale(1);
   overflow: hidden;
   z-index: 2147480000; }

@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Conveuro",
-  "version": "1.2.1",
+  "version": "1.2.2",
 
   "author": "Hristiyan Dodov",
   "description": "Instantly convert currencies with a simple text selection.",
@@ -13,7 +13,7 @@
 
   "permissions": [
     "storage",
-    "https://api.exchangerate.host/"
+    "http://data.fixer.io/"
   ],
 
   "web_accessible_resources": [
